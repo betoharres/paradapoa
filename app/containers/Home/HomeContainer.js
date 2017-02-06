@@ -1,7 +1,8 @@
 import React, { PropTypes, Component } from 'react'
-import { ListView } from 'react-native'
+import { ListView, AsyncStorage } from 'react-native'
 import { Home, Bus } from '~/components'
 import busSchedules from '~/lib'
+import immutable, { fromJS } from 'immutable'
 
 class HomeContainer extends Component {
 
@@ -12,21 +13,49 @@ class HomeContainer extends Component {
   constructor (props) {
     super(props)
     this.ds = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => r1 !== r2
+      rowHasChanged: (r1, r2) => !immutable.is(r1 , r2)
     })
     this.state = {
-      dataSource: this.ds.cloneWithRows(busSchedules),
+      searchedText: '',
+      busSchedules: busSchedules,
+      dataSource: this.ds.cloneWithRows(busSchedules.toArray()),
     }
   }
 
-  renderRow = ({code, nome, horarios}) => {
-    return <Bus nome={nome} code={code} />
+  handleSelectBus = async (code) => {
+    this.props.navigator.push({busDetails: true, passProps: {code: code}})
+  }
+
+  handleSearchBus = (text) => {
+    if (text.length > 0) {
+      let filteredBuses = fromJS({})
+      this.state.busSchedules.map((bus) => {
+        if (bus.get('nome').indexOf(text.trim().toUpperCase()) !== -1) {
+          filteredBuses = filteredBuses.merge({[bus.get('code')]: bus})
+        }
+      })
+      this.setState({
+        searchedText: text,
+        dataSource: this.ds.cloneWithRows(filteredBuses.toArray())
+      })
+    } else {
+      this.setState({
+        searchedText: text,
+        dataSource: this.ds.cloneWithRows(this.state.busSchedules.toArray())
+      })
+    }
+  }
+
+  renderRow = (bus) => {
+    return <Bus name={bus.get('nome')} code={bus.get('code')}
+              selectBus={this.handleSelectBus} />
   }
 
   render () {
-    console.log(this.state.dataSource)
     return (
-      <Home renderRow={this.renderRow} dataSource={this.state.dataSource} />
+      <Home renderRow={this.renderRow} dataSource={this.state.dataSource}
+        searchText={this.state.searchedText}
+        onSearchBus={(text) => this.handleSearchBus(text)} />
     )
   }
 }

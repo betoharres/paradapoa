@@ -1,23 +1,41 @@
 import React, { PropTypes } from 'react'
-import { Text, View, StyleSheet, ListView } from 'react-native'
+import { View, StyleSheet, ListView, Platform, TextInput } from 'react-native'
+import { colors } from '~/styles'
 
 Home.propTypes = {
   dataSource: PropTypes.object.isRequired,
   renderRow: PropTypes.func.isRequired,
+  onSearchBus: PropTypes.func.isRequired,
+  searchText: PropTypes.string.isRequired,
 }
 
 export default function Home (props) {
 
   return (
-    <View style={styles.container}>
-      <ListView renderRow={props.renderRow} dataSource={props.dataSource} />
+    <View style={Platform.OS === 'android' ? styles.containerAndroid : styles.containerIOS}>
+      <TextInput onChangeText={props.onSearchBus} style={styles.textInput}
+        value={props.searchText} />
+      <ListView renderRow={props.renderRow} dataSource={props.dataSource}
+        enableEmptySections={true} />
     </View>
   )
 
 }
 
 const styles = StyleSheet.create({
-  container: {
+  containerIOS: {
     flex: 1,
+    marginTop: 15,
+  },
+  containerAndroid: {
+    flex: 1,
+  },
+  textInput: {
+    marginRight: 10,
+    marginLeft: 10,
+    marginTop: 15,
+    height: 40,
+    borderColor: colors.border,
+    borderWidth: 1,
   }
 })

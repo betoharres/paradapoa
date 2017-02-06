@@ -1,17 +1,19 @@
 import React, { PropTypes } from 'react'
-import { Text, View, StyleSheet } from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
+import { colors } from '~/styles'
 
 Bus.propTypes = {
-  nome: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   code: PropTypes.string.isRequired,
+  selectBus: PropTypes.func.isRequired,
 }
 
 export default function Bus (props) {
 
   return (
-    <View style={styles.container}>
-      <Text>{props.code} - {props.nome}</Text>
-    </View>
+    <TouchableOpacity onPress={() => props.selectBus(props.code)} style={styles.container}>
+      <Text>{props.code} - {props.name}</Text>
+    </TouchableOpacity>
   )
 
 }
@@ -21,7 +23,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     borderBottomWidth: 1,
-    borderColor: '#E4E4E4',
+    borderColor: colors.border,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

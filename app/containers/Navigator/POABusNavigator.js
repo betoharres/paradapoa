@@ -1,19 +1,32 @@
 import React, { PropTypes, Component } from 'react'
-import { Navigator } from 'react-native'
-import { HomeContainer } from '~/containers'
+import { Navigator, Platform } from 'react-native'
+import { HomeContainer, BusDetailsContainer } from '~/containers'
 
 class POABusNavigator extends Component {
 
   renderScene = (route, navigator) => {
-    return <HomeContainer navigator={navigator} />
+    if (route.home === true) {
+      return <HomeContainer navigator={navigator} />
+    } else {
+      return <BusDetailsContainer code={route.passProps.code}
+                navigator={navigator} />
+    }
   }
 
-  configureScene = () => {
+  configureScene = (route) => {
+    if (Platform.OS === 'android') {
+      return Navigator.SceneConfigs.FloatFromBottomAndroid
+    }
+    if (route.busDetails === true) {
+      return Navigator.SceneConfigs.FloatFromBottom
+    }
+    return Navigator.SceneConfigs.FloatFromRight
   }
 
   render () {
     return (
       <Navigator
+        initialRoute={{home: true}}
         renderScene={this.renderScene}
         configureScene={this.configureScene} />
     )

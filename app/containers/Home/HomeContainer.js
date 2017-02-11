@@ -28,9 +28,13 @@ class HomeContainer extends Component {
 
   handleSearchBus = (text) => {
     if (text.length > 0) {
+      const searchedText = text.trim().toUpperCase()
       let filteredBuses = fromJS({})
       this.state.busSchedules.map((bus) => {
-        if (bus.get('nome').indexOf(text.trim().toUpperCase()) !== -1) {
+        const busName = bus.get('nome')
+        const busCode = bus.get('code')
+        if (busName.indexOf(searchedText) !== -1
+            || busCode.indexOf(searchedText) !== -1) {
           filteredBuses = filteredBuses.merge({[bus.get('code')]: bus})
         }
       })

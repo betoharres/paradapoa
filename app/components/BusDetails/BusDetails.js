@@ -34,8 +34,7 @@ export default function BusDetails (props) {
       />
       <View style={styles.titleContainer}>
         <Text style={[styles.title, {fontFamily: Platform.OS === 'android'
-          ? 'Roboto'
-          : 'Helvetica Neue'}]}>{props.name}</Text>
+          ? 'Roboto' : 'Helvetica Neue'}]}>{props.name}</Text>
       </View>
     </View>
   )
@@ -46,6 +45,9 @@ const styles = StyleSheet.create({
   titleContainer: {
     alignItems: 'center',
     marginTop: 15,
+    paddingBottom: 15,
+    borderBottomColor: colors.border,
+    borderBottomWidth: 0.5,
   },
   title: {
     fontSize: fontSizes.primary,

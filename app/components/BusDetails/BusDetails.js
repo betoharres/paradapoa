@@ -1,8 +1,11 @@
 import React, { PropTypes } from 'react'
-import { Text, View, TouchableOpacity, StyleSheet, Platform } from 'react-native'
+import { Text, View, TouchableOpacity,
+         StyleSheet, Platform, Dimensions, ScrollView } from 'react-native'
 import { POABusNavigationBar } from '~/components'
 import { colors, fontSizes } from '~/styles'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+const { width } = Dimensions.get('window')
+const SCHEDULE_ITEM_WIDTH = (width * 0.25)
 
 BusDetails.propTypes = {
   onBack: PropTypes.func.isRequired,
@@ -17,6 +20,7 @@ BusDetails.propTypes = {
 export default function BusDetails (props) {
 
   console.log(props.schedules.toJS())
+  // props.schedules.getIn(['ida', 'dias_uteis']).get(0).get(0).get(1)
 
   return (
     <View>
@@ -36,6 +40,13 @@ export default function BusDetails (props) {
         <Text style={[styles.title, {fontFamily: Platform.OS === 'android'
           ? 'Roboto' : 'Helvetica Neue'}]}>{props.name}</Text>
       </View>
+      <ScrollView>
+        <View style={styles.schedulesContainer}>
+          <View style={styles.scheduleItem}>
+            <Text>{'Hi'}</Text>
+          </View>
+        </View>
+      </ScrollView>
     </View>
   )
 
@@ -51,5 +62,21 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: fontSizes.primary,
+  },
+  schedulesContainer: {
+    margin: 20,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  scheduleItem: {
+    width: (SCHEDULE_ITEM_WIDTH - 10),
+    padding: 10,
+    maxHeight: 40,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 0.5,
+    borderRadius: 7,
+    borderColor: colors.border,
   }
 })

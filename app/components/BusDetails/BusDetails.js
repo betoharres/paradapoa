@@ -19,8 +19,46 @@ BusDetails.propTypes = {
 
 export default function BusDetails (props) {
 
-  console.log(props.schedules.toJS())
-  // props.schedules.getIn(['ida', 'dias_uteis']).get(0).get(0).get(1)
+  function Schedules (props) {
+    return (
+      <View>
+        {props.schedules.map((schedule, index) => (
+          <View style={styles.scheduleItem} key={index}>
+            <Text>{schedule.getIn([0,0]) + ':' + schedule.getIn([0,1])}</Text>
+          </View>
+        ))}
+      </View>
+    )
+  }
+
+  function ScheduleDirection (props) {
+    let scheduleDirections = props.directionsInfo.keySeq().toArray()
+    scheduleDirections = scheduleDirections.filter((item) => item !== 'sentido')
+    return (
+      <View>
+        <View>
+          <Text>{props.directionsInfo.get('sentido')}</Text>
+        </View>
+        {scheduleDirections.map((scheduleDirection, index) => (
+          <View key={index}>
+            <Text>{scheduleDirection}</Text>
+            <Schedules key={index} schedules={props.directionsInfo.get(scheduleDirection)}/>
+          </View>
+        ))}
+      </View>
+    )
+  }
+
+  function Directions (props) {
+    const directions = props.busInfo.keySeq().toArray()
+    return (
+      <View>
+        {directions.map((direction, index) => (
+          <ScheduleDirection key={index} directionsInfo={props.busInfo.get(direction)} />
+        ))}
+      </View>
+    )
+  }
 
   return (
     <View>
@@ -42,9 +80,7 @@ export default function BusDetails (props) {
       </View>
       <ScrollView>
         <View style={styles.schedulesContainer}>
-          <View style={styles.scheduleItem}>
-            <Text>{'Hi'}</Text>
-          </View>
+          <Directions busInfo={props.schedules} />
         </View>
       </ScrollView>
     </View>

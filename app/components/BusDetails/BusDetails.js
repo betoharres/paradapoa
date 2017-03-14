@@ -4,6 +4,8 @@ import { Text, View, TouchableOpacity,
 import { POABusNavigationBar } from '~/components'
 import { colors, fontSizes } from '~/styles'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import { parseTitle } from '~/utils/parse'
+
 const { width } = Dimensions.get('window')
 const SCHEDULE_ITEM_WIDTH = (width * 0.25)
 
@@ -21,10 +23,10 @@ export default function BusDetails (props) {
 
   function Schedules (props) {
     return (
-      <View>
+      <View style={styles.schedulesContainer}>
         {props.schedules.map((schedule, index) => (
           <View style={styles.scheduleItem} key={index}>
-            <Text>{schedule.getIn([0,0]) + ':' + schedule.getIn([0,1])}</Text>
+            <Text>{schedule.getIn([0,0]) + ':' + (schedule.getIn([0,1]) == 0 ? '00' : schedule.getIn([0,1]))}</Text>
           </View>
         ))}
       </View>
@@ -32,24 +34,29 @@ export default function BusDetails (props) {
   }
 
   function ScheduleDirection (props) {
-    let scheduleDirections = props.directionsInfo.keySeq().toArray()
-    scheduleDirections = scheduleDirections.filter((item) => item !== 'sentido')
+    const directionTitle = parseTitle(props.directionsInfo.get('sentido'))
+    let weekDaysType = props.directionsInfo.keySeq().toArray()
+    weekDaysType = weekDaysType.filter((item) => item !== 'sentido')
     return (
       <View>
-        <View>
-          <Text>{props.directionsInfo.get('sentido')}</Text>
+        <View style={styles.directionTextContainer}>
+          <Text style={styles.directionText}>
+            Sentido: {directionTitle}
+          </Text>
         </View>
-        {scheduleDirections.map((scheduleDirection, index) => (
+        {weekDaysType.map((weekDayType, index) => (
           <View key={index}>
-            <Text>{scheduleDirection}</Text>
-            <Schedules key={index} schedules={props.directionsInfo.get(scheduleDirection)}/>
+            <View style={styles.dayTypeContainer}>
+              <Text style={styles.directionTitle}>{parseTitle(weekDayType)}</Text>
+            </View>
+            <Schedules key={index} schedules={props.directionsInfo.get(weekDayType)}/>
           </View>
         ))}
       </View>
     )
   }
 
-  function Directions (props) {
+  function BusSchedules (props) {
     const directions = props.busInfo.keySeq().toArray()
     return (
       <View>
@@ -79,8 +86,8 @@ export default function BusDetails (props) {
           ? 'Roboto' : 'Helvetica Neue'}]}>{props.name}</Text>
       </View>
       <ScrollView>
-        <View style={styles.schedulesContainer}>
-          <Directions busInfo={props.schedules} />
+        <View>
+          <BusSchedules busInfo={props.schedules} />
         </View>
       </ScrollView>
     </View>
@@ -114,5 +121,21 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderRadius: 7,
     borderColor: colors.border,
+  },
+  directionTextContainer: {
+    padding: 10,
+    backgroundColor: '#eceff1',
+    alignItems: 'center',
+    borderBottomWidth: 0.5,
+    borderBottomColor: colors.border,
+  },
+  directionText: {
+    fontSize: 15,
+  },
+  dayTypeContainer: {
+    padding: 10,
+    alignItems: 'center',
+    borderBottomWidth: 0.5,
+    borderBottomColor: colors.border,
   }
 })

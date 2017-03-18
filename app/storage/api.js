@@ -9,13 +9,14 @@ export async function toggleSaveBus (code) {
 }
 
 export async function getSavedBuses () {
-  const savedBuses =  await AsyncStorage.getItem('savedBuses')
+  const savedBuses =  await AsyncStorage.getItem('savedBuses') || '{}'
   const parsedBuses = JSON.parse(savedBuses)
+
   let filteredBuses = {}
   Object.keys(parsedBuses).map((code) => {
     if (parsedBuses[code]) {
       filteredBuses[code] = parsedBuses[code]
     }
   })
-  return filteredBuses || {}
+  return filteredBuses
 }

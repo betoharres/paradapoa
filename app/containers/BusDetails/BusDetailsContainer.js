@@ -42,7 +42,7 @@ class BusDetailsContainer extends Component {
       this.setState({
         isFavorite: !this.state.isFavorite,
         showFlashNotification: true,
-        flashNotificationText: `Onibus ${this.props.code} ${actionWord} com sucesso`,
+        flashNotificationText: `Onibus ${this.props.code} ${actionWord}`,
       })
     } catch (e) {
       this.setState({

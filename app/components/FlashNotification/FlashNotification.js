@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 10,
-    top: 135,
+    top: 150,
     left: (width - NOTIFICATION_WIDTH) / 2,
   },
   text: {

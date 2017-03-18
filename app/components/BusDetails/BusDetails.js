@@ -4,7 +4,7 @@ import { Text, View, TouchableOpacity,
 import { POABusNavigationBar } from '~/components'
 import { colors, fontSizes } from '~/styles'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import { parseTitle } from '~/utils/parse'
+import { parseTitle, parseTime } from '~/utils/parse'
 
 const { width } = Dimensions.get('window')
 const SCHEDULE_ITEM_WIDTH = (width * 0.25)
@@ -26,7 +26,7 @@ export default function BusDetails (props) {
       <View style={styles.schedulesContainer}>
         {props.schedules.map((schedule, index) => (
           <View style={styles.scheduleItem} key={index}>
-            <Text>{schedule.getIn([0,0]) + ':' + (schedule.getIn([0,1]) == 0 ? '00' : schedule.getIn([0,1]))}</Text>
+            <Text>{parseTime(schedule.getIn([0,0])) + ':' + parseTime(schedule.getIn([0,1]))}</Text>
           </View>
         ))}
       </View>
@@ -108,6 +108,7 @@ const styles = StyleSheet.create({
   },
   schedulesContainer: {
     margin: 20,
+    marginBottom: 40,
     flexDirection: 'row',
     flexWrap: 'wrap',
   },

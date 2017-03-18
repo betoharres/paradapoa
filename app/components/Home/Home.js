@@ -13,8 +13,8 @@ export default function Home (props) {
 
   return (
     <View style={Platform.OS === 'android' ? styles.containerAndroid : styles.containerIOS}>
-      <TextInput onChangeText={props.onSearchBus} style={styles.textInput}
-        value={props.searchText} />
+      <TextInput autoCorrect={false} onChangeText={props.onSearchBus} style={styles.textInput}
+        autoFocus={true} value={props.searchText} />
       <ListView renderRow={props.renderRow} dataSource={props.dataSource}
         enableEmptySections={true} />
     </View>

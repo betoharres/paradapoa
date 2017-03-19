@@ -55,13 +55,11 @@ class BusDetailsContainer extends Component {
   render () {
     return (
       <View>
-        {this.state.showFlashNotification
-            ? <FlashNotification text={this.state.flashNotificationText}
-                onHideNotification={this.handleHideFlashNotification} /> : null}
         <BusDetails code={this.state.code} name={this.state.name}
           schedules={this.state.schedules} saveBus={this.handleSaveBus}
           onBack={this.props.navigator.pop} onSaveBus={this.handleSaveBus}
-          isFavorite={this.state.isFavorite} />
+          onHideNotification={this.handleHideFlashNotification} isFavorite={this.state.isFavorite}
+          showNotification={this.state.showFlashNotification} notificationText={this.state.flashNotificationText}/>
       </View>
     )
   }

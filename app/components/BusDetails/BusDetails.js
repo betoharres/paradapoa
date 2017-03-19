@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import { Text, View, TouchableOpacity,
          StyleSheet, Platform, Dimensions, ScrollView } from 'react-native'
-import { POABusNavigationBar } from '~/components'
+import { POABusNavigationBar, FlashNotification } from '~/components'
 import { colors, fontSizes } from '~/styles'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { parseTitle, parseTime } from '~/utils/parse'
@@ -81,6 +81,10 @@ export default function BusDetails (props) {
           </TouchableOpacity>
         }
       />
+      {props.showNotification
+        ? <FlashNotification text={props.notificationText}
+            onHideNotification={props.onHideNotification} />
+        : null}
       <View style={styles.titleContainer}>
         <Text style={[styles.title, {fontFamily: Platform.OS === 'android'
           ? 'Roboto' : 'Helvetica Neue'}]}>{props.name}</Text>

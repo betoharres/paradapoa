@@ -1,5 +1,7 @@
 import React, { PropTypes } from 'react'
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
+import { ListItem } from 'react-native-elements'
+
 import { colors } from '~/styles'
 
 Bus.propTypes = {
@@ -11,9 +13,11 @@ Bus.propTypes = {
 export default function Bus (props) {
 
   return (
-    <TouchableOpacity onPress={() => props.selectBus(props.code)} style={styles.container}>
-      <Text>{props.code} - {props.name}</Text>
-    </TouchableOpacity>
+    <ListItem
+      key={props.listId}
+      subtitle={props.name}
+      title={props.code}
+      onPress={() => props.selectBus(props.code)}/>
   )
 
 }

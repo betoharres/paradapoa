@@ -54,12 +54,12 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'black',
     borderRadius: 5,
-    height: 50,
+    height: 35,
     position: 'absolute',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 10,
-    top: 35,
+    top: 43,
     left: (width - NOTIFICATION_WIDTH) / 2,
   },
   text: {

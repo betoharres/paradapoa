@@ -17,9 +17,9 @@ class POABusNavigator extends Component {
     if (Platform.OS === 'android') {
       return Navigator.SceneConfigs.FloatFromBottomAndroid
     }
-    if (route.busDetails === true) {
-      return Navigator.SceneConfigs.FloatFromBottom
-    }
+    // if (route.busDetails === true) {
+    //   return Navigator.SceneConfigs.FloatFromBottom
+    // }
     return Navigator.SceneConfigs.FloatFromRight
   }
 

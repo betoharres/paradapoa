@@ -4,6 +4,7 @@ import { Text, View, TouchableOpacity,
 import { POABusNavigationBar, FlashNotification } from '~/components'
 import { colors, fontSizes } from '~/styles'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import EntypoIcon from 'react-native-vector-icons/Entypo'
 import { parseTitle, parseTime } from '~/utils/parse'
 
 const { width } = Dimensions.get('window')
@@ -68,11 +69,13 @@ export default function BusDetails (props) {
   }
 
   return (
-    <View>
+    <View style={styles.container}>
       <POABusNavigationBar title={`Horários do ${props.code}`}
         leftButton={
           <TouchableOpacity onPress={props.onBack}>
-            <Text style={{color: '#4A90E2'}}>Fechar</Text>
+            <EntypoIcon name='chevron-thin-left' color={colors.blue} size={14}>
+              <Text style={{color: '#4A90E2'}}>Voltar</Text>
+            </EntypoIcon>
           </TouchableOpacity>
         } rightButton={
           <TouchableOpacity style={styles.saveBusBtn} onPress={props.onSaveBus}>
@@ -100,6 +103,9 @@ export default function BusDetails (props) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'white',
+  },
   titleContainer: {
     alignItems: 'center',
     marginTop: 15,

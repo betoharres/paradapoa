@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
 import { View, StyleSheet, ListView, Platform, TextInput } from 'react-native'
+import { SearchBar, List } from 'react-native-elements'
 import { colors } from '~/styles'
 
 Home.propTypes = {
@@ -13,10 +14,17 @@ export default function Home (props) {
 
   return (
     <View style={Platform.OS === 'android' ? styles.containerAndroid : styles.containerIOS}>
-      <TextInput autoCorrect={false} onChangeText={props.onSearchBus} style={styles.textInput}
-        autoFocus={true} value={props.searchText} />
-      <ListView renderRow={props.renderRow} dataSource={props.dataSource}
-        enableEmptySections={true} />
+      <SearchBar lightTheme
+        autoCorrect={false}
+        onChangeText={props.onSearchBus}
+        placeholder={'Pesquisar'}
+        icon={{name: 'search'}}
+        textInputRef={'SeachBus'}
+        value={props.searchText} />
+      <List containerStyle={{marginTop: 0}}>
+        <ListView renderRow={props.renderRow} dataSource={props.dataSource}
+          enableEmptySections={true} />
+      </List>
     </View>
   )
 
@@ -25,7 +33,7 @@ export default function Home (props) {
 const styles = StyleSheet.create({
   containerIOS: {
     flex: 1,
-    marginTop: 15,
+    marginTop: 25,
   },
   containerAndroid: {
     flex: 1,
@@ -33,7 +41,7 @@ const styles = StyleSheet.create({
   textInput: {
     marginRight: 10,
     marginLeft: 10,
-    marginTop: 15,
+    marginTop: 40,
     height: 40,
     borderColor: colors.border,
     borderWidth: 1,

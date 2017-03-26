@@ -50,9 +50,11 @@ class HomeContainer extends Component {
     }
   }
 
-  renderRow = (bus) => {
-    return <Bus name={bus.get('nome')} code={bus.get('code')}
-              selectBus={this.handleSelectBus} />
+  renderRow = (bus, listId) => {
+    return <Bus listId={listId}
+                name={bus.get('nome')}
+                code={bus.get('code')}
+                selectBus={this.handleSelectBus} />
   }
 
   render () {

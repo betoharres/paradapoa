@@ -25,11 +25,15 @@ class FlashNotification extends Component {
   componentDidMount () {
     Animated.spring(this.state.width, {toValue: NOTIFICATION_WIDTH}).start()
     Animated.timing(this.state.textOpacity, {toValue: 1, duration: 1000}).start()
-    setTimeout(() => {
+    this.timeout = setTimeout(() => {
       Animated.timing(this.state.opacity, {toValue: 0, duration: 1000}).start(
         this.props.onHideNotification
       )
     }, this.props.length)
+  }
+
+  componentWillUnmount () {
+    clearTimeout(this.timeout)
   }
 
   getStyles = () => {

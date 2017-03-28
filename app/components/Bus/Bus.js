@@ -17,6 +17,7 @@ export default function Bus (props) {
       key={props.listId}
       subtitle={props.name}
       title={props.code}
+      leftIcon={props.isFavorite ? {name: 'favorite', color: colors.red} : null}
       onPress={() => props.selectBus(props.code)}/>
   )
 

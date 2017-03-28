@@ -8,19 +8,16 @@ class POABusNavigator extends Component {
     if (route.home === true) {
       return <HomeContainer navigator={navigator} />
     } else {
-      return <BusDetailsContainer code={route.passProps.code}
-                navigator={navigator} />
+      return <BusDetailsContainer code={route.passProps.code} navigator={navigator} />
     }
   }
 
   configureScene = (route) => {
-    if (Platform.OS === 'android') {
-      return Navigator.SceneConfigs.FloatFromBottomAndroid
+    if (route.home === true) {
+      return Navigator.SceneConfigs.FloatFromLeft
+    } else {
+      return Navigator.SceneConfigs.FloatFromRight
     }
-    // if (route.busDetails === true) {
-    //   return Navigator.SceneConfigs.FloatFromBottom
-    // }
-    return Navigator.SceneConfigs.FloatFromRight
   }
 
   render () {

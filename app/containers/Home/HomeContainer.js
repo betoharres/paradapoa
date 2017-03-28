@@ -3,6 +3,8 @@ import { ListView, AsyncStorage } from 'react-native'
 import { Home, Bus } from '~/components'
 import busSchedules from '~/lib'
 import immutable, { fromJS } from 'immutable'
+import { getSavedBuses, filterBusesByText,
+         filterBusesByArray } from '~/storage/api'
 
 class HomeContainer extends Component {
 
@@ -17,8 +19,40 @@ class HomeContainer extends Component {
     })
     this.state = {
       searchedText: '',
-      busSchedules: busSchedules,
-      dataSource: this.ds.cloneWithRows(busSchedules.toArray()),
+      bookmarks: fromJS({}),
+      shouldUpdate: props.shouldUpdate,
+      dataSource: this.ds.cloneWithRows([]),
+    }
+  }
+
+  async componentDidMount () {
+    let bookmarks = await getSavedBuses()
+    bookmarks = Object.keys(bookmarks)
+    if (bookmarks.length > 0) {
+      bookmarks = filterBusesByArray(bookmarks, busSchedules)
+      this.setState({dataSource: this.ds.cloneWithRows(bookmarks.toArray()), bookmarks})
+    } else {
+      this.setState({dataSource: this.ds.cloneWithRows(busSchedules.toArray())})
+    }
+  }
+
+  async componentWillUpdate () {
+    let bookmarks = await getSavedBuses()
+    bookmarks = Object.keys(bookmarks)
+    if (bookmarks.length !== this.state.bookmarks.size) {
+      if (this.state.searchedText.length > 0) {
+        const filteredBuses = filterBusesByText(this.state.searchedText, busSchedules)
+        this.setState({
+          dataSource: this.ds.cloneWithRows(filteredBuses.toArray())
+        })
+      } else {
+        if (bookmarks.length > 0) {
+          bookmarks = filterBusesByArray(bookmarks, busSchedules)
+          this.setState({dataSource: this.ds.cloneWithRows(bookmarks.toArray()), bookmarks})
+        } else {
+          this.setState({dataSource: this.ds.cloneWithRows(busSchedules.toArray()), bookmarks: fromJS({})})
+        }
+      }
     }
   }
 
@@ -28,30 +62,24 @@ class HomeContainer extends Component {
 
   handleSearchBus = (text) => {
     if (text.length > 0) {
-      const searchedText = text.trim().toUpperCase()
-      let filteredBuses = fromJS({})
-      this.state.busSchedules.map((bus) => {
-        const busName = bus.get('nome')
-        const busCode = bus.get('code')
-        if (busName.indexOf(searchedText) !== -1
-            || busCode.indexOf(searchedText) !== -1) {
-          filteredBuses = filteredBuses.merge({[bus.get('code')]: bus})
-        }
-      })
+      const filteredBuses = filterBusesByText(text, busSchedules)
       this.setState({
         searchedText: text,
         dataSource: this.ds.cloneWithRows(filteredBuses.toArray())
       })
     } else {
+      const busList = this.state.bookmarks.size > 0
+        ? this.state.bookmarks.toArray() : busSchedules.toArray()
       this.setState({
         searchedText: text,
-        dataSource: this.ds.cloneWithRows(this.state.busSchedules.toArray())
+        dataSource: this.ds.cloneWithRows(busList)
       })
     }
   }
 
   renderRow = (bus, listId) => {
     return <Bus listId={listId}
+                isFavorite={this.state.bookmarks.has(bus.get('code'))}
                 name={bus.get('nome')}
                 code={bus.get('code')}
                 selectBus={this.handleSelectBus} />

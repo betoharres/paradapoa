@@ -57,9 +57,12 @@ class BusDetailsContainer extends Component {
       <View>
         <BusDetails code={this.state.code} name={this.state.name}
           schedules={this.state.schedules} saveBus={this.handleSaveBus}
-          onBack={this.props.navigator.pop} onSaveBus={this.handleSaveBus}
-          onHideNotification={this.handleHideFlashNotification} isFavorite={this.state.isFavorite}
-          showNotification={this.state.showFlashNotification} notificationText={this.state.flashNotificationText}/>
+          onBack={this.props.navigator.pop}
+          isFavorite={this.state.isFavorite}
+          onHideNotification={this.handleHideFlashNotification}
+          showNotification={this.state.showFlashNotification}
+          notificationText={this.state.flashNotificationText}
+          onSaveBus={this.handleSaveBus} />
       </View>
     )
   }

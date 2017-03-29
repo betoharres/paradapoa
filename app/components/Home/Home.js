@@ -21,10 +21,8 @@ export default function Home (props) {
         icon={{name: 'search'}}
         textInputRef={'SeachBus'}
         value={props.searchText} />
-      <List containerStyle={{marginTop: 0}}>
         <ListView renderRow={props.renderRow} dataSource={props.dataSource}
           enableEmptySections={true} />
-      </List>
     </View>
   )
 

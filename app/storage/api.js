@@ -27,10 +27,10 @@ export function filterBusesByText (text, buses) {
   let filteredBuses = fromJS({})
   buses.map((bus) => {
     const busName = bus.get('nome')
-    const busCode = bus.get('code')
+    const busCode = bus.get('numero')
     if (busName.indexOf(searchedText) !== -1
         || busCode.indexOf(searchedText) !== -1) {
-      filteredBuses = filteredBuses.merge({[bus.get('code')]: bus})
+      filteredBuses = filteredBuses.merge({[busCode]: bus})
     }
   })
   return filteredBuses

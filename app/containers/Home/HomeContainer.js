@@ -79,9 +79,9 @@ class HomeContainer extends Component {
 
   renderRow = (bus, listId) => {
     return <Bus listId={listId}
-                isFavorite={this.state.bookmarks.has(bus.get('code'))}
+                isFavorite={this.state.bookmarks.has(bus.get('numero'))}
                 name={bus.get('nome')}
-                code={bus.get('code')}
+                code={bus.get('numero')}
                 selectBus={this.handleSelectBus} />
   }
 

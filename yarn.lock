@@ -3041,8 +3041,8 @@ react-deep-force-update@^1.0.0:
   resolved "https://registry.yarnpkg.com/react-deep-force-update/-/react-deep-force-update-1.0.1.tgz#f911b5be1d2a6fe387507dd6e9a767aa2924b4c7"
 
 react-native-elements@^0.10.0:
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/react-native-elements/-/react-native-elements-0.10.0.tgz#ea4e6bca0a0888d9d5e524f3f1eee63cec4e7f58"
+  version "0.10.2"
+  resolved "https://registry.yarnpkg.com/react-native-elements/-/react-native-elements-0.10.2.tgz#a8b9135f92d58f8abbc0209233e8f35e4c121878"
   dependencies:
     react-native-side-menu "^0.20.1"
     react-native-tab-navigator "^0.3.3"

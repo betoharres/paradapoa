@@ -27,7 +27,7 @@ export default function BusDetails (props) {
       <View style={styles.schedulesContainer}>
         {props.schedules.map((schedule, index) => (
           <View style={styles.scheduleItem} key={index}>
-            <Text>{parseTime(schedule.getIn([0,0])) + ':' + parseTime(schedule.getIn([0,1]))}</Text>
+            <Text>{schedule.get('horario')}</Text>
           </View>
         ))}
       </View>
@@ -70,7 +70,7 @@ export default function BusDetails (props) {
 
   return (
     <View style={styles.container}>
-      <POABusNavigationBar title={`Horários do ${props.code}`}
+      <POABusNavigationBar title={`Horários de ${props.code}`}
         leftButton={
           <TouchableOpacity onPress={props.onBack}>
             <EntypoIcon name='chevron-thin-left' color={colors.blue} size={14}>

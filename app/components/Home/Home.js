@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react'
 import { View, StyleSheet, ListView, Platform, TextInput } from 'react-native'
 import { SearchBar, List } from 'react-native-elements'
 import { colors } from '~/styles'
+import { Footer } from '~/components'
 
 Home.propTypes = {
   dataSource: PropTypes.object.isRequired,
@@ -23,6 +24,7 @@ export default function Home (props) {
         value={props.searchText} />
         <ListView renderRow={props.renderRow} dataSource={props.dataSource}
           enableEmptySections={true} />
+        <Footer />
     </View>
   )
 

@@ -5,6 +5,7 @@ import { POABusNavigationBar, FlashNotification } from '~/components'
 import { colors, fontSizes } from '~/styles'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import EntypoIcon from 'react-native-vector-icons/Entypo'
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
 import { parseTitle, parseTime } from '~/utils/parse'
 
 const { width } = Dimensions.get('window')
@@ -26,8 +27,11 @@ export default function BusDetails (props) {
     return (
       <View style={styles.schedulesContainer}>
         {props.schedules.map((schedule, index) => (
-          <View style={styles.scheduleItem} key={index}>
-            <Text>{schedule.get('horario')}</Text>
+          <View style={styles.scheduleItemContainer} key={index}>
+            <Text style={styles.scheduleTime}>{schedule.get('horario')}</Text>
+            {schedule.get('cadeirante')
+                ? <FontAwesomeIcon style={styles.scheduleIcon} name='wheelchair' color={colors.blue} size={14} />
+                : null }
           </View>
         ))}
       </View>
@@ -122,7 +126,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
-  scheduleItem: {
+  scheduleItemContainer: {
     width: (SCHEDULE_ITEM_WIDTH - 10),
     padding: 10,
     maxHeight: 40,
@@ -132,6 +136,10 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderRadius: 7,
     borderColor: colors.border,
+  },
+  scheduleTime: {
+  },
+  scheduleIcon: {
   },
   directionTextContainer: {
     padding: 10,

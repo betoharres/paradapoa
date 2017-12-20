@@ -55,8 +55,11 @@ class BusDetailsContainer extends Component {
   render () {
     return (
       <View>
-        <BusDetails code={this.state.code} name={this.state.name}
-          schedules={this.state.schedules} saveBus={this.handleSaveBus}
+        <BusDetails
+          code={this.state.code}
+          name={this.state.name}
+          saveBus={this.handleSaveBus}
+          schedules={this.state.schedules}
           onBack={this.props.navigator.pop}
           isFavorite={this.state.isFavorite}
           onHideNotification={this.handleHideFlashNotification}

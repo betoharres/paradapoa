@@ -23,15 +23,16 @@ BusDetails.propTypes = {
 
 export default function BusDetails (props) {
 
+  setBackgroundColor = (schedule) => {
+    return schedule.get('cadeirante') ? {backgroundColor: 'rgba(3, 169, 244, 0.08)'} : {}
+  }
+
   function Schedules (props) {
     return (
       <View style={styles.schedulesContainer}>
         {props.schedules.map((schedule, index) => (
-          <View style={styles.scheduleItemContainer} key={index}>
+          <View style={[styles.scheduleItemContainer, this.setBackgroundColor(schedule)]} key={index}>
             <Text style={styles.scheduleTime}>{schedule.get('horario')}</Text>
-            {schedule.get('cadeirante')
-                ? <FontAwesomeIcon style={styles.scheduleIcon} name='wheelchair' color={colors.blue} size={14} />
-                : null }
           </View>
         ))}
       </View>

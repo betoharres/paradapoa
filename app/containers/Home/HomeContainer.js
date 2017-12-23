@@ -57,6 +57,7 @@ class HomeContainer extends Component {
   }
 
   handleSelectBus = async (code) => {
+    this.setState({searchedText: ''})
     this.props.navigator.push({busDetails: true, passProps: {code: code}})
   }
 

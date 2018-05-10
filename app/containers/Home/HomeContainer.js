@@ -3,8 +3,7 @@ import { ListView, AsyncStorage } from 'react-native'
 import { Home, Bus } from '~/components'
 import busSchedules from '~/lib'
 import immutable, { fromJS } from 'immutable'
-import { getSavedBuses, filterBusesByText,
-         filterBusesByArray } from '~/storage/api'
+import { getSavedBuses, filterBusesByText, filterBusesByArray } from '~/storage/api'
 
 class HomeContainer extends Component {
 
@@ -84,6 +83,15 @@ class HomeContainer extends Component {
                 name={bus.get('nome')}
                 code={bus.get('numero')}
                 selectBus={this.handleSelectBus} />
+  }
+
+  componentWillUnmount () {
+    const busList = this.state.bookmarks.size > 0
+      ? this.state.bookmarks.toArray() : busSchedules.toArray()
+    this.setState({
+      dataSource: this.ds.cloneWithRows(busList),
+      searchedText: '',
+    })
   }
 
   render () {

@@ -58,7 +58,6 @@ class BusDetailsContainer extends Component {
         <BusDetails
           code={this.state.code}
           name={this.state.name}
-          saveBus={this.handleSaveBus}
           schedules={this.state.schedules}
           onBack={this.props.navigator.pop}
           isFavorite={this.state.isFavorite}

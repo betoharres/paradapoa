@@ -17,7 +17,6 @@ BusDetails.propTypes = {
   code: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   schedules: PropTypes.object.isRequired,
-  saveBus: PropTypes.func.isRequired,
   isFavorite: PropTypes.bool.isRequired,
 }
 

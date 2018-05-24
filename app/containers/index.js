@@ -1,4 +1,3 @@
-export POABusNavigator from './Navigator/POABusNavigator'
-export HomeContainer from './Home/HomeContainer'
-export AppContainer from './App/AppContainer'
-export BusDetailsContainer from './BusDetails/BusDetailsContainer'
+export { default as POABusNavigator } from './Navigator/POABusNavigator'
+export { default as HomeContainer } from './Home/HomeContainer'
+export { default as BusDetailsContainer } from './BusDetails/BusDetailsContainer'

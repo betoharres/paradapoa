@@ -1,12 +1,29 @@
-import React, { PropTypes } from 'react'
-import { Text, View, TouchableOpacity,
-         StyleSheet, Platform, Dimensions, ScrollView } from 'react-native'
-import { POABusNavigationBar, FlashNotification } from '~/components'
-import { colors, fontSizes } from '~/styles'
+import React from 'react'
+import PropTypes from 'prop-types'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import EntypoIcon from 'react-native-vector-icons/Entypo'
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
-import { parseTitle, parseTime } from '~/utils/parse'
+import { colors, fontSizes } from '~/styles'
+import { parseTitle } from '~/utils/parse'
+import { VirtualizedList, FlatList } from 'react-native'
+
+import fromJS from 'immutable'
+
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  Platform,
+  Dimensions,
+  ScrollView,
+} from 'react-native'
+
+import {
+  POABusNavigationBar,
+  FlashNotification,
+  BusInfo,
+  NavbarDetails,
+} from '~/components'
 
 const { width } = Dimensions.get('window')
 const SCHEDULE_ITEM_WIDTH = (width * 0.25)
@@ -29,11 +46,31 @@ export default function BusDetails (props) {
   function Schedules (props) {
     return (
       <View style={styles.schedulesContainer}>
-        {props.schedules.map((schedule, index) => (
-          <View style={[styles.scheduleItemContainer, this.setBackgroundColor(schedule)]} key={index}>
-            <Text style={styles.scheduleTime}>{schedule.get('horario')}</Text>
-          </View>
-        ))}
+        <VirtualizedList
+          data={props.schedules}
+          getItem={(data, index) => {
+            let items = []
+            for (let i = 0; i < 4; i++) {
+              const item = data.get(index * 4 + i)
+              item && items.push(item)
+              item && console.log(item.get('horario'))
+            }
+            return items
+          }}
+          getItemCount={(data) => data.size}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({item, index}) => {
+            return (
+              <View key={index} style={{flexDirection: 'row'}}>
+                {item.map((elem, i) => (
+                  <View key={i} style={[styles.scheduleItem, this.setBackgroundColor(elem)]}>
+                    <Text key={i} style={styles.scheduleTime}>{elem.get('horario')}</Text>
+                  </View>
+                ))}
+              </View>
+            )
+          }}
+        />
       </View>
     )
   }
@@ -52,7 +89,7 @@ export default function BusDetails (props) {
         {weekDaysType.map((weekDayType, index) => (
           <View key={index}>
             <View style={styles.dayTypeContainer}>
-              <Text style={styles.directionTitle}>{parseTitle(weekDayType)}</Text>
+              <Text key={index} style={styles.directionTitle}>{parseTitle(weekDayType)}</Text>
             </View>
             <Schedules key={index} schedules={props.directionsInfo.get(weekDayType)}/>
           </View>
@@ -63,13 +100,9 @@ export default function BusDetails (props) {
 
   function BusSchedules (props) {
     const directions = props.busInfo.keySeq().toArray()
-    return (
-      <View>
-        {directions.map((direction, index) => (
-          <ScheduleDirection key={index} directionsInfo={props.busInfo.get(direction)} />
-        ))}
-      </View>
-    )
+    return directions.map((direction, index) => (
+            <ScheduleDirection key={index} directionsInfo={props.busInfo.get(direction)} />
+           ))
   }
 
   return (
@@ -96,10 +129,8 @@ export default function BusDetails (props) {
         <Text style={[styles.title, {fontFamily: Platform.OS === 'android'
           ? 'Roboto' : 'Helvetica Neue'}]}>{props.name}</Text>
       </View>
-      <ScrollView>
-        <View>
-          <BusSchedules busInfo={props.schedules} />
-        </View>
+      <ScrollView keyboardShouldPersistTaps={'always'}>
+        <BusSchedules busInfo={props.schedules} />
       </ScrollView>
     </View>
   )
@@ -123,18 +154,14 @@ const styles = StyleSheet.create({
   schedulesContainer: {
     margin: 20,
     marginBottom: 40,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    paddingBottom: 100,
   },
-  scheduleItemContainer: {
+  scheduleItem: {
     width: (SCHEDULE_ITEM_WIDTH - 10),
     padding: 10,
     maxHeight: 40,
-    flexDirection: 'column',
-    justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 0.5,
-    borderRadius: 7,
+    borderWidth: 0.8,
     borderColor: colors.border,
   },
   scheduleTime: {
@@ -150,6 +177,10 @@ const styles = StyleSheet.create({
   },
   directionText: {
     fontSize: 15,
+  },
+  saveBusBtn: {
+    width: '20%',
+    height: '20%',
   },
   dayTypeContainer: {
     padding: 10,

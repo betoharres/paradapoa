@@ -1,8 +1,10 @@
-import React, { PropTypes, Component } from 'react'
-import { Navigator, Platform } from 'react-native'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { Platform } from 'react-native'
+import { Navigator } from 'react-native-deprecated-custom-components'
 import { HomeContainer, BusDetailsContainer } from '~/containers'
 
-class POABusNavigator extends Component {
+export default class POABusNavigator extends Component {
 
   renderScene = (route, navigator) => {
     if (route.home === true) {
@@ -30,4 +32,3 @@ class POABusNavigator extends Component {
   }
 }
 
-export default POABusNavigator

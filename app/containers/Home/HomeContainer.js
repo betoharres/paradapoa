@@ -1,11 +1,12 @@
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { ListView, AsyncStorage } from 'react-native'
 import { Home, Bus } from '~/components'
 import busSchedules from '~/lib'
 import immutable, { fromJS } from 'immutable'
 import { getSavedBuses, filterBusesByText, filterBusesByArray } from '~/storage/api'
 
-class HomeContainer extends Component {
+export default class HomeContainer extends Component {
 
   static propTypes = {
     navigator: PropTypes.object.isRequired,
@@ -56,7 +57,6 @@ class HomeContainer extends Component {
   }
 
   handleSelectBus = async (code) => {
-    this.setState({searchedText: ''})
     this.props.navigator.push({busDetails: true, passProps: {code: code}})
   }
 
@@ -68,12 +68,7 @@ class HomeContainer extends Component {
         dataSource: this.ds.cloneWithRows(filteredBuses.toArray())
       })
     } else {
-      const busList = this.state.bookmarks.size > 0
-        ? this.state.bookmarks.toArray() : busSchedules.toArray()
-      this.setState({
-        searchedText: text,
-        dataSource: this.ds.cloneWithRows(busList)
-      })
+      this.clearBusList(text)
     }
   }
 
@@ -85,22 +80,21 @@ class HomeContainer extends Component {
                 selectBus={this.handleSelectBus} />
   }
 
-  componentWillUnmount () {
-    const busList = this.state.bookmarks.size > 0
-      ? this.state.bookmarks.toArray() : busSchedules.toArray()
-    this.setState({
-      dataSource: this.ds.cloneWithRows(busList),
-      searchedText: '',
-    })
+  clearBusList (searchedText) {
+    const { bookmarks } = this.state
+
+    const busList = bookmarks.size > 0 ? bookmarks : busSchedules
+    this.setState({dataSource: this.ds.cloneWithRows(busList.toArray()), searchedText})
   }
 
   render () {
     return (
-      <Home renderRow={this.renderRow} dataSource={this.state.dataSource}
+      <Home
+        renderRow={this.renderRow}
+        dataSource={this.state.dataSource}
         searchText={this.state.searchedText}
         onSearchBus={(text) => this.handleSearchBus(text)} />
     )
   }
 }
 
-export default HomeContainer

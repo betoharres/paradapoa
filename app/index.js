@@ -1,10 +1,14 @@
-import React from 'react'
-import { AppContainer } from '~/containers'
+import React, { Component } from 'react'
+import { View } from 'react-native'
+import { POABusNavigator } from './containers'
 
-export default function POABus (props) {
+export default class App extends Component<{}> {
 
-  return (
-    <AppContainer />
-  )
-
+  render() {
+    return (
+      <View style={{flex: 1}}>
+        <POABusNavigator />
+      </View>
+    )
+  }
 }

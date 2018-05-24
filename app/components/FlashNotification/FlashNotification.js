@@ -1,9 +1,10 @@
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { View, Text, StyleSheet, Animated, Dimensions } from 'react-native'
 const { width } = Dimensions.get('window')
 const NOTIFICATION_WIDTH = width * 0.7
 
-class FlashNotification extends Component {
+export default class FlashNotification extends Component {
 
   static propTypes = {
     length: PropTypes.number.isRequired,
@@ -33,6 +34,7 @@ class FlashNotification extends Component {
   }
 
   componentWillUnmount () {
+    this.props.onHideNotification()
     clearTimeout(this.timeout)
   }
 
@@ -71,4 +73,3 @@ const styles = StyleSheet.create({
   },
 })
 
-export default FlashNotification

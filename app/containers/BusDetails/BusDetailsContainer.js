@@ -1,10 +1,11 @@
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { View } from 'react-native'
 import { BusDetails, FlashNotification } from '~/components'
 import { toggleSaveBus, getSavedBuses } from '~/storage/api'
 import busSchedules from '~/lib'
 
-class BusDetailsContainer extends Component {
+export default class BusDetailsContainer extends Component {
 
   static propTypes = {
     navigator: PropTypes.object.isRequired,
@@ -54,20 +55,17 @@ class BusDetailsContainer extends Component {
 
   render () {
     return (
-      <View>
-        <BusDetails
-          code={this.state.code}
-          name={this.state.name}
-          schedules={this.state.schedules}
-          onBack={this.props.navigator.pop}
-          isFavorite={this.state.isFavorite}
-          onHideNotification={this.handleHideFlashNotification}
-          showNotification={this.state.showFlashNotification}
-          notificationText={this.state.flashNotificationText}
-          onSaveBus={this.handleSaveBus} />
-      </View>
+      <BusDetails
+        code={this.state.code}
+        name={this.state.name}
+        schedules={this.state.schedules}
+        onBack={this.props.navigator.pop}
+        isFavorite={this.state.isFavorite}
+        onHideNotification={this.handleHideFlashNotification}
+        showNotification={this.state.showFlashNotification}
+        notificationText={this.state.flashNotificationText}
+        onSaveBus={this.handleSaveBus} />
     )
   }
 }
 
-export default BusDetailsContainer

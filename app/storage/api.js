@@ -43,3 +43,15 @@ export function filterBusesByArray (array, buses) {
   })
   return filteredBuses
 }
+
+export async function getUIEvents (uiName) {
+  const uiEvents = await AsyncStorage.getItem('ui') || '{}'
+  const uiEventsObject = JSON.parse(uiEvents)
+  return uiEventsObject[uiName]
+}
+
+export async function setUIEvent (uiName, key, value) {
+  let uiEvents = JSON.parse(await AsyncStorage.getItem('ui')) || {[uiName]: {}}
+  uiEvents[uiName] = {...uiEvents[uiName], ...{[key]: value}}
+  await AsyncStorage.setItem('ui', JSON.stringify(uiEvents))
+}

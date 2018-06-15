@@ -3,8 +3,9 @@ import PropTypes from 'prop-types'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import EntypoIcon from 'react-native-vector-icons/Entypo'
 import { colors, fontSizes } from '~/styles'
-import { parseTitle } from '~/utils/parse'
+import { parseDirection, parseTitle } from '~/utils/parse'
 import { VirtualizedList, FlatList } from 'react-native'
+import { Card, Badge } from 'react-native-elements'
 
 import fromJS from 'immutable'
 
@@ -26,7 +27,7 @@ import {
 } from '~/components'
 
 const { width } = Dimensions.get('window')
-const SCHEDULE_ITEM_WIDTH = (width * 0.25)
+const SCHEDULE_ITEM_WIDTH = (width * 0.26)
 
 BusDetails.propTypes = {
   onBack: PropTypes.func.isRequired,
@@ -50,10 +51,9 @@ export default function BusDetails (props) {
           data={props.schedules}
           getItem={(data, index) => {
             let items = []
-            for (let i = 0; i < 4; i++) {
-              const item = data.get(index * 4 + i)
+            for (let i = 0; i < 3; i++) {
+              const item = data.get(index * 3 + i)
               item && items.push(item)
-              item && console.log(item.get('horario'))
             }
             return items
           }}
@@ -76,32 +76,29 @@ export default function BusDetails (props) {
   }
 
   function ScheduleDirection (props) {
-    const directionTitle = parseTitle(props.directionsInfo.get('sentido'))
+    const directionTitle = parseDirection(props.directionsInfo.get('sentido'))
     let weekDaysType = props.directionsInfo.keySeq().toArray()
     weekDaysType = weekDaysType.filter((item) => item !== 'sentido')
+    const isLastDirection = (props.directionsInfo.size === props.counter)
+
     return (
-      <View>
-        <View style={styles.directionTextContainer}>
-          <Text style={styles.directionText}>
-            Sentido: {directionTitle}
-          </Text>
-        </View>
+      <Card title={directionTitle} wrapperStyle={styles.cardStyle}>
         {weekDaysType.map((weekDayType, index) => (
           <View key={index}>
             <View style={styles.dayTypeContainer}>
-              <Text key={index} style={styles.directionTitle}>{parseTitle(weekDayType)}</Text>
+              <Badge key={index} style={styles.directionTitle} value={parseTitle(weekDayType)} />
             </View>
             <Schedules key={index} schedules={props.directionsInfo.get(weekDayType)}/>
           </View>
         ))}
-      </View>
+      </Card>
     )
   }
 
   function BusSchedules (props) {
     const directions = props.busInfo.keySeq().toArray()
     return directions.map((direction, index) => (
-            <ScheduleDirection key={index} directionsInfo={props.busInfo.get(direction)} />
+            <ScheduleDirection key={index} directionsInfo={props.busInfo.get(direction)} counter={++index} />
            ))
   }
 
@@ -111,25 +108,29 @@ export default function BusDetails (props) {
         leftButton={
           <TouchableOpacity onPress={props.onBack}>
             <EntypoIcon name='chevron-thin-left' color={colors.blue} size={14}>
-              <Text style={{color: '#4A90E2'}}>Voltar</Text>
+              <Text style={styles.backText}>Voltar</Text>
             </EntypoIcon>
           </TouchableOpacity>
         } rightButton={
-          <TouchableOpacity style={styles.saveBusBtn} onPress={props.onSaveBus}>
-            <Icon name={`favorite${props.isFavorite ? '' : '-border'}`}
-              color={colors.red} size={20}/>
+          <TouchableOpacity
+            onPress={props.onSaveBus}
+            hitSlop={{ top: 25, bottom: 75, right: 25, left: 40 }}>
+            <Icon
+              name={`favorite${props.isFavorite ? '' : '-border'}`}
+              color={colors.red}
+              size={20} />
           </TouchableOpacity>
         }
       />
       {props.showNotification
-        ? <FlashNotification text={props.notificationText}
-            onHideNotification={props.onHideNotification} />
-        : null}
+          ? <FlashNotification
+              text={props.notificationText}
+              onHideNotification={props.onHideNotification} />
+          : null}
       <View style={styles.titleContainer}>
-        <Text style={[styles.title, {fontFamily: Platform.OS === 'android'
-          ? 'Roboto' : 'Helvetica Neue'}]}>{props.name}</Text>
+        <Text style={styles.title}>{props.name}</Text>
       </View>
-      <ScrollView keyboardShouldPersistTaps={'always'}>
+      <ScrollView style={styles.scrollView}>
         <BusSchedules busInfo={props.schedules} />
       </ScrollView>
     </View>
@@ -138,6 +139,9 @@ export default function BusDetails (props) {
 }
 
 const styles = StyleSheet.create({
+  scrollView: {
+    marginBottom: 117,
+  },
   container: {
     backgroundColor: 'white',
   },
@@ -147,17 +151,22 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
     borderBottomColor: colors.border,
     borderBottomWidth: 0.5,
+    width: '100%',
   },
   title: {
+    fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica Neue',
+    textAlign: 'center',
     fontSize: fontSizes.primary,
   },
   schedulesContainer: {
-    margin: 20,
-    marginBottom: 40,
-    paddingBottom: 100,
+    alignContent: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    marginBottom: 70,
+    width: '100%',
   },
   scheduleItem: {
-    width: (SCHEDULE_ITEM_WIDTH - 10),
+    width: SCHEDULE_ITEM_WIDTH,
     padding: 10,
     maxHeight: 40,
     alignItems: 'center',
@@ -165,8 +174,6 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
   },
   scheduleTime: {
-  },
-  scheduleIcon: {
   },
   directionTextContainer: {
     padding: 10,
@@ -178,14 +185,15 @@ const styles = StyleSheet.create({
   directionText: {
     fontSize: 15,
   },
-  saveBusBtn: {
-    width: '20%',
-    height: '20%',
+  backText: {
+    color: '#4A90E2',
   },
   dayTypeContainer: {
     padding: 10,
     alignItems: 'center',
-    borderBottomWidth: 0.5,
-    borderBottomColor: colors.border,
+  },
+  cardStyle: {
+    alignContent: 'center',
+    marginLeft: Platform.OS === 'android' ? '2%' : '3%',
   }
 })

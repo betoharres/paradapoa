@@ -6,3 +6,7 @@ export function parseTime (time) {
   time = time.toString()
   return time === 0 || time < 10 ? '0' + time : time
 }
+
+export function parseDirection (direction) {
+  return parseTitle(direction).replace(/\s/, ' / ')
+}

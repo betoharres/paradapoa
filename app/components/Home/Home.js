@@ -16,16 +16,20 @@ export default function Home (props) {
 
   return (
     <View style={Platform.OS === 'android' ? styles.containerAndroid : styles.containerIOS}>
-      <SearchBar lightTheme
+      <SearchBar
+        lightTheme
+        round
         autoCorrect={false}
         onChangeText={props.onSearchBus}
+        inputStyle={{backgroundColor: 'white'}}
         placeholder={'Pesquisar'}
-        icon={{name: 'search'}}
         textInputRef={'SeachBus'}
         value={props.searchText} />
-        <ListView renderRow={props.renderRow} dataSource={props.dataSource}
-          enableEmptySections={true} />
-        <Footer />
+      <ListView
+        renderRow={props.renderRow}
+        dataSource={props.dataSource}
+        enableEmptySections={true} />
+        { Platform.OS === 'android' ? <Footer /> : null }
     </View>
   )
 

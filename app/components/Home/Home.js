@@ -39,9 +39,11 @@ const styles = StyleSheet.create({
   containerIOS: {
     flex: 1,
     marginTop: 25,
+    backgroundColor: 'white',
   },
   containerAndroid: {
     flex: 1,
+    backgroundColor: 'white',
   },
   textInput: {
     marginRight: 10,

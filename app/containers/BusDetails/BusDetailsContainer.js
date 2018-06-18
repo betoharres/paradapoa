@@ -7,16 +7,16 @@ import busSchedules from '~/lib'
 
 export default class BusDetailsContainer extends Component {
 
-  static propTypes = {
-    navigator: PropTypes.object.isRequired,
+  static navigationOptions = {
+    header: null,
   }
 
   constructor (props) {
     super(props)
     this.state = {
-      code: props.code,
-      name: busSchedules.getIn([props.code, 'nome']),
-      schedules: busSchedules.getIn([props.code, 'horarios']),
+      code: props.navigation.getParam('code', null),
+      name: busSchedules.getIn([props.navigation.getParam('code'), 'nome']),
+      schedules: busSchedules.getIn([props.navigation.getParam('code'), 'horarios']),
       isFavorite: false,
       showFlashNotification: false,
       flashNotificationText: '',
@@ -43,7 +43,7 @@ export default class BusDetailsContainer extends Component {
       this.setState({
         isFavorite: !this.state.isFavorite,
         showFlashNotification: true,
-        flashNotificationText: `Onibus ${this.props.code} ${actionWord}`,
+        flashNotificationText: `Onibus ${this.state.code} ${actionWord}`,
       })
     } catch (e) {
       this.setState({
@@ -59,7 +59,7 @@ export default class BusDetailsContainer extends Component {
         code={this.state.code}
         name={this.state.name}
         schedules={this.state.schedules}
-        onBack={this.props.navigator.pop}
+        onBack={() => this.props.navigation.goBack()}
         isFavorite={this.state.isFavorite}
         onHideNotification={this.handleHideFlashNotification}
         showNotification={this.state.showFlashNotification}

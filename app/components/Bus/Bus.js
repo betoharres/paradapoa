@@ -20,7 +20,6 @@ export default function Bus (props) {
       title={props.code}
       underlayColor={colors.border}
       leftIcon={props.isFavorite ? {name: 'favorite', color: colors.red} : null}
-      onLongPress={() => props.selectBus(props.code)}
       onPress={() => props.selectBus(props.code)} />
   )
 

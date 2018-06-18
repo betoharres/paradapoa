@@ -8,56 +8,53 @@ import { getSavedBuses, filterBusesByText, filterBusesByArray } from '~/storage/
 
 export default class HomeContainer extends Component {
 
-  static propTypes = {
-    navigator: PropTypes.object.isRequired,
+  static navigationOptions = {
+    header: null,
+    headerStyle: {
+      backgroundColor: 'transparent',
+    },
   }
 
   constructor (props) {
     super(props)
-    this.ds = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => !immutable.is(r1 , r2)
-    })
+    this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => !immutable.is(r1, r2)})
     this.state = {
       searchedText: '',
       bookmarks: fromJS({}),
-      shouldUpdate: props.shouldUpdate,
-      dataSource: this.ds.cloneWithRows([]),
+      dataSource: this.ds.cloneWithRows(busSchedules.toArray()),
     }
   }
 
   async componentDidMount () {
-    let bookmarks = await getSavedBuses()
-    bookmarks = Object.keys(bookmarks)
+    let bookmarks = Object.keys(await getSavedBuses())
     if (bookmarks.length > 0) {
       bookmarks = filterBusesByArray(bookmarks, busSchedules)
       this.setState({dataSource: this.ds.cloneWithRows(bookmarks.toArray()), bookmarks})
-    } else {
-      this.setState({dataSource: this.ds.cloneWithRows(busSchedules.toArray())})
     }
   }
 
-  async componentWillUpdate () {
-    let bookmarks = await getSavedBuses()
-    bookmarks = Object.keys(bookmarks)
-    if (bookmarks.length !== this.state.bookmarks.size) {
-      if (this.state.searchedText.length > 0) {
-        const filteredBuses = filterBusesByText(this.state.searchedText, busSchedules)
-        this.setState({
-          dataSource: this.ds.cloneWithRows(filteredBuses.toArray())
-        })
-      } else {
-        if (bookmarks.length > 0) {
-          bookmarks = filterBusesByArray(bookmarks, busSchedules)
-          this.setState({dataSource: this.ds.cloneWithRows(bookmarks.toArray()), bookmarks})
-        } else {
-          this.setState({dataSource: this.ds.cloneWithRows(busSchedules.toArray()), bookmarks: fromJS({})})
-        }
-      }
-    }
-  }
+  // async componentDidUpdate () {
+  //   let bookmarks = await getSavedBuses()
+  //   bookmarks = Object.keys(bookmarks)
+  //   if (bookmarks.length !== this.state.bookmarks.size) {
+  //     if (this.state.searchedText.length > 0) {
+  //       const filteredBuses = filterBusesByText(this.state.searchedText, busSchedules)
+  //       this.setState({
+  //         dataSource: this.ds.cloneWithRows(filteredBuses.toArray())
+  //       })
+  //     } else {
+  //       if (bookmarks.length > 0) {
+  //         bookmarks = filterBusesByArray(bookmarks, busSchedules)
+  //         this.setState({dataSource: this.ds.cloneWithRows(bookmarks.toArray()), bookmarks})
+  //       } else {
+  //         this.setState({dataSource: this.ds.cloneWithRows(busSchedules.toArray()), bookmarks: fromJS({})})
+  //       }
+  //     }
+  //   }
+  // }
 
   handleSelectBus = async (code) => {
-    this.props.navigator.push({busDetails: true, passProps: {code: code}})
+    this.props.navigation.navigate('BusDetails', {code})
   }
 
   handleSearchBus = (text) => {
@@ -68,19 +65,22 @@ export default class HomeContainer extends Component {
         dataSource: this.ds.cloneWithRows(filteredBuses.toArray())
       })
     } else {
-      this.clearBusList(text)
+      this.clearBusList()
     }
   }
 
   renderRow = (bus, listId) => {
+    const { bookmarks } = this.state
+    const isFavorite = bookmarks.size > 0 ? bookmarks.has(bus.get('numero')) : false
+
     return <Bus listId={listId}
-                isFavorite={this.state.bookmarks.has(bus.get('numero'))}
+                isFavorite={isFavorite}
                 name={bus.get('nome')}
                 code={bus.get('numero')}
                 selectBus={this.handleSelectBus} />
   }
 
-  clearBusList (searchedText) {
+  clearBusList (searchedText = '') {
     const { bookmarks } = this.state
 
     const busList = bookmarks.size > 0 ? bookmarks : busSchedules

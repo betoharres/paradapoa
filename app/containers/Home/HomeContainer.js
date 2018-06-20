@@ -21,7 +21,7 @@ export default class HomeContainer extends PureComponent {
     this.state = {
       searchedText: '',
       bookmarks: fromJS({}),
-      dataSource: this.ds.cloneWithRows(busSchedules.toArray()),
+      dataSource: this.ds.cloneWithRows([]),
     }
 
     // react-navigation does not unmount after changing screen,
@@ -35,7 +35,7 @@ export default class HomeContainer extends PureComponent {
       } else {
         this.setState({ bookmarks: fromJS({}) })
       }
-      this.handleSearchBus(this.state.searchedText)
+      this.handleDisplayBuses(this.state.searchedText)
     })
   }
 
@@ -47,7 +47,7 @@ export default class HomeContainer extends PureComponent {
     this.props.navigation.navigate('BusDetails', {code})
   }
 
-  handleSearchBus = (searchedText) => {
+  handleDisplayBuses = (searchedText) => {
     if (searchedText.length > 0) {
       const searchedBuses = filterBusesByText(searchedText, busSchedules).toArray()
       this.setState({ searchedText, dataSource: this.ds.cloneWithRows(searchedBuses) })
@@ -73,7 +73,7 @@ export default class HomeContainer extends PureComponent {
         renderRow={this.renderRow}
         dataSource={this.state.dataSource}
         searchText={this.state.searchedText}
-        onSearchBus={(text) => this.handleSearchBus(text)} />
+        onSearchBus={(text) => this.handleDisplayBuses(text)} />
     )
   }
 }

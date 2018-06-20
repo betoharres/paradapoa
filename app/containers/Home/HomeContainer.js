@@ -23,35 +23,29 @@ export default class HomeContainer extends Component {
       bookmarks: fromJS({}),
       dataSource: this.ds.cloneWithRows(busSchedules.toArray()),
     }
+
+    this.subs = this.props.navigation.addListener('willFocus', async () => {
+      let bookmarks = Object.keys(await getSavedBuses())
+      if (bookmarks.length > 0) {
+        bookmarks = filterBusesByArray(bookmarks, busSchedules)
+
+        if (this.state.searchedText.length > 0) {
+          this.setState({ bookmarks })
+          this.handleSearchBus(this.state.searchedText)
+        } else {
+          this.setState({ bookmarks, dataSource: this.ds.cloneWithRows(bookmarks.toArray()) })
+        }
+
+      } else {
+        this.setState({bookmarks: fromJS({})})
+        this.handleSearchBus(this.state.searchedText)
+      }
+    })
   }
 
-  async componentDidMount () {
-    let bookmarks = Object.keys(await getSavedBuses())
-    if (bookmarks.length > 0) {
-      bookmarks = filterBusesByArray(bookmarks, busSchedules)
-      this.setState({dataSource: this.ds.cloneWithRows(bookmarks.toArray()), bookmarks})
-    }
+  componentWillUnmount () {
+    this.subs.remove()
   }
-
-  // async componentDidUpdate () {
-  //   let bookmarks = await getSavedBuses()
-  //   bookmarks = Object.keys(bookmarks)
-  //   if (bookmarks.length !== this.state.bookmarks.size) {
-  //     if (this.state.searchedText.length > 0) {
-  //       const filteredBuses = filterBusesByText(this.state.searchedText, busSchedules)
-  //       this.setState({
-  //         dataSource: this.ds.cloneWithRows(filteredBuses.toArray())
-  //       })
-  //     } else {
-  //       if (bookmarks.length > 0) {
-  //         bookmarks = filterBusesByArray(bookmarks, busSchedules)
-  //         this.setState({dataSource: this.ds.cloneWithRows(bookmarks.toArray()), bookmarks})
-  //       } else {
-  //         this.setState({dataSource: this.ds.cloneWithRows(busSchedules.toArray()), bookmarks: fromJS({})})
-  //       }
-  //     }
-  //   }
-  // }
 
   handleSelectBus = async (code) => {
     this.props.navigation.navigate('BusDetails', {code})

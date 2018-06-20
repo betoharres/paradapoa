@@ -3,9 +3,6 @@ import PropTypes from 'prop-types'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import EntypoIcon from 'react-native-vector-icons/Entypo'
 import { colors, fontSizes } from '~/styles'
-import { parseDirection, parseTitle } from '~/utils/parse'
-import { VirtualizedList } from 'react-native'
-import { Card, Badge } from 'react-native-elements'
 
 import fromJS from 'immutable'
 
@@ -23,7 +20,6 @@ import {
   POABusNavigationBar,
   FlashNotification,
   BusInfo,
-  NavbarDetails,
 } from '~/components'
 
 const { width } = Dimensions.get('window')
@@ -96,42 +92,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: fontSizes.primary,
   },
-  schedulesContainer: {
-    alignContent: 'center',
-    justifyContent: 'center',
-    flexDirection: 'column',
-    marginBottom: 70,
-    width: '100%',
-  },
-  scheduleItem: {
-    width: SCHEDULE_ITEM_WIDTH,
-    padding: 10,
-    maxHeight: 40,
-    alignItems: 'center',
-    borderWidth: 0.8,
-    borderColor: colors.border,
-  },
-  scheduleTime: {
-  },
-  directionTextContainer: {
-    padding: 10,
-    backgroundColor: '#eceff1',
-    alignItems: 'center',
-    borderBottomWidth: 0.5,
-    borderBottomColor: colors.border,
-  },
-  directionText: {
-    fontSize: 15,
-  },
-  backText: {
-    color: '#4A90E2',
-  },
-  dayTypeContainer: {
-    padding: 10,
-    alignItems: 'center',
-  },
-  cardStyle: {
-    alignContent: 'center',
-    marginLeft: Platform.OS === 'android' ? '2%' : '3%',
-  }
 })

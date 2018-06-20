@@ -32,7 +32,7 @@ export default function Schedules (props) {
             <View key={index} style={{flexDirection: 'row'}}>
               {item.map((elem, i) => (
                 <View key={i} style={[styles.scheduleItem, this.setBackgroundColor(elem)]}>
-                  <Text key={i} style={styles.scheduleTime}>{elem.get('horario')}</Text>
+                  <Text key={i}>{elem.get('horario')}</Text>
                 </View>
               ))}
             </View>
@@ -45,25 +45,6 @@ export default function Schedules (props) {
 }
 
 const styles = StyleSheet.create({
-  scrollView: {
-    marginBottom: 117,
-  },
-  container: {
-    backgroundColor: 'white',
-  },
-  titleContainer: {
-    alignItems: 'center',
-    marginTop: 15,
-    paddingBottom: 15,
-    borderBottomColor: colors.border,
-    borderBottomWidth: 0.5,
-    width: '100%',
-  },
-  title: {
-    fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica Neue',
-    textAlign: 'center',
-    fontSize: fontSizes.primary,
-  },
   schedulesContainer: {
     alignContent: 'center',
     justifyContent: 'center',
@@ -79,27 +60,4 @@ const styles = StyleSheet.create({
     borderWidth: 0.8,
     borderColor: colors.border,
   },
-  scheduleTime: {
-  },
-  directionTextContainer: {
-    padding: 10,
-    backgroundColor: '#eceff1',
-    alignItems: 'center',
-    borderBottomWidth: 0.5,
-    borderBottomColor: colors.border,
-  },
-  directionText: {
-    fontSize: 15,
-  },
-  backText: {
-    color: '#4A90E2',
-  },
-  dayTypeContainer: {
-    padding: 10,
-    alignItems: 'center',
-  },
-  cardStyle: {
-    alignContent: 'center',
-    marginLeft: Platform.OS === 'android' ? '2%' : '3%',
-  }
 })

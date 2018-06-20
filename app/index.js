@@ -5,7 +5,7 @@ import { HomeContainer, BusDetailsContainer } from './containers'
 
 // https://github.com/facebook/react-native/issues/18868
 import { YellowBox } from 'react-native'
-YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader'])
+YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader', 'Class RCTCxxModule'])
 
 const RootStack = createStackNavigator({
   Home: HomeContainer,

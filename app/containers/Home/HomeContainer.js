@@ -49,27 +49,22 @@ export default class HomeContainer extends Component {
 
   handleSearchBus = (searchedText) => {
     if (searchedText.length > 0) {
-      const filteredBuses = filterBusesByText(searchedText, busSchedules)
-      this.setState({
-        searchedText,
-        dataSource: this.ds.cloneWithRows(filteredBuses.toArray())
-      })
+      const searchedBuses = filterBusesByText(searchedText, busSchedules).toArray()
+      this.setState({ searchedText, dataSource: this.ds.cloneWithRows(searchedBuses) })
     } else {
       const { bookmarks } = this.state
       const busList = bookmarks.size > 0 ? bookmarks : busSchedules
-      this.setState({ dataSource: this.ds.cloneWithRows(busList.toArray()) })
+      this.setState({ searchedText, dataSource: this.ds.cloneWithRows(busList.toArray()) })
     }
   }
 
   renderRow = (bus, listId) => {
-    const { bookmarks } = this.state
-    const isFavorite = bookmarks.has(bus.get('numero'))
 
     return <Bus listId={listId}
-                isFavorite={isFavorite}
                 name={bus.get('nome')}
                 code={bus.get('numero')}
-                selectBus={this.handleSelectBus} />
+                selectBus={this.handleSelectBus}
+                isFavorite={this.state.bookmarks.has(bus.get('numero'))} />
   }
 
   render () {

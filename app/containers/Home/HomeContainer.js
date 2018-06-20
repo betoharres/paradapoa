@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { ListView, AsyncStorage } from 'react-native'
 import { Home, Bus } from '~/components'
@@ -6,7 +6,7 @@ import busSchedules from '~/lib'
 import immutable, { fromJS } from 'immutable'
 import { getSavedBuses, filterBusesByText, filterBusesByArray } from '~/storage/api'
 
-export default class HomeContainer extends Component {
+export default class HomeContainer extends PureComponent {
 
   static navigationOptions = {
     header: null,

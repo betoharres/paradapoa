@@ -1,16 +1,21 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { View } from 'react-native'
 import { ScheduleDirection } from '~/components'
 
-export default function BusInfo (props) {
-  const directions = props.busInfo.keySeq().toArray()
+export default class BusInfo extends Component {
 
-  return (
-    <View>
-      {directions.map((direction, index) => (
-        <ScheduleDirection key={index} directionsInfo={props.busInfo.get(direction)} />
-      ))}
-    </View>
-  )
+  shouldComponentUpdate () {
+    return false
+  }
+
+  render () {
+    const directions = this.props.busInfo.keySeq().toArray()
+    return directions.map((direction, index) => (
+      <ScheduleDirection
+        key={index}
+        counter={++index}
+        directionsInfo={this.props.busInfo.get(direction)} />
+    ))
+  }
 
 }

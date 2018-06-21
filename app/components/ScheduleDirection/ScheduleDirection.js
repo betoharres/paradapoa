@@ -16,7 +16,7 @@ export default function ScheduleDirection (props) {
   const isLastDirection = (props.directionsInfo.size === props.counter)
 
   return (
-    <Card title={directionTitle} wrapperStyle={styles.cardStyle}>
+    <Card title={directionTitle}>
       {weekDaysType.map((weekDayType, index) => (
         <View key={index}>
           <View style={styles.dayTypeContainer}>
@@ -31,11 +31,7 @@ export default function ScheduleDirection (props) {
 
 const styles = StyleSheet.create({
   dayTypeContainer: {
-    padding: 10,
+    margin: 15,
     alignItems: 'center',
   },
-  cardStyle: {
-    alignContent: 'center',
-    marginLeft: Platform.OS === 'android' ? '2%' : '3%',
-  }
 })

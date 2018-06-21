@@ -8,6 +8,10 @@ import { getSavedBuses, filterBusesByText, filterBusesByArray } from '~/storage/
 
 export default class HomeContainer extends PureComponent {
 
+  static propTypes = {
+    navigation: PropTypes.object.isRequired,
+  }
+
   static navigationOptions = {
     header: null,
     headerStyle: {
@@ -60,7 +64,8 @@ export default class HomeContainer extends PureComponent {
 
   renderRow = (bus, listId) => {
 
-    return <BusItem listId={listId}
+    return <BusItem
+                listId={listId}
                 name={bus.get('nome')}
                 code={bus.get('numero')}
                 selectBus={this.handleSelectBus}

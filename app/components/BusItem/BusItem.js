@@ -6,8 +6,10 @@ import { ListItem } from 'react-native-elements'
 import { colors } from '~/styles'
 
 BusItem.propTypes = {
+  listId: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   code: PropTypes.string.isRequired,
+  isFavorite: PropTypes.bool.isRequired,
   selectBus: PropTypes.func.isRequired,
 }
 

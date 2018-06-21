@@ -1,9 +1,15 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Text, View, Dimensions, StyleSheet, Platform, VirtualizedList } from 'react-native'
 import { colors, fontSizes } from '~/styles'
+import { List } from 'immutable'
 
 const { width } = Dimensions.get('window')
 const SCHEDULE_ITEM_WIDTH = (width * 0.26)
+
+Schedules.propTypes = {
+  schedules: PropTypes.instanceOf(List),
+}
 
 export default function Schedules (props) {
 

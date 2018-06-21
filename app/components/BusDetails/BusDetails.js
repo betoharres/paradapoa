@@ -32,6 +32,7 @@ BusDetails.propTypes = {
   name: PropTypes.string.isRequired,
   schedules: PropTypes.object.isRequired,
   isFavorite: PropTypes.bool.isRequired,
+  onHideNotification: PropTypes.func.isRequired,
 }
 
 export default function BusDetails (props) {

@@ -29,7 +29,7 @@ export default function Schedules (props) {
         keyExtractor={(item, index) => index.toString()}
         renderItem={({item, index}) => {
           return (
-            <View key={index} style={{flexDirection: 'row'}}>
+            <View key={index} style={styles.scheduleItemContainer}>
               {item.map((elem, i) => (
                 <View key={i} style={[styles.scheduleItem, this.setBackgroundColor(elem)]}>
                   <Text key={i}>{elem.get('horario')}</Text>
@@ -46,11 +46,11 @@ export default function Schedules (props) {
 
 const styles = StyleSheet.create({
   schedulesContainer: {
-    alignContent: 'center',
-    justifyContent: 'center',
-    flexDirection: 'column',
+    alignItems: 'center',
     marginBottom: 70,
-    width: '100%',
+  },
+  scheduleItemContainer: {
+    flexDirection: 'row',
   },
   scheduleItem: {
     width: SCHEDULE_ITEM_WIDTH,

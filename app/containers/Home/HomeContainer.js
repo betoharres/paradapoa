@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { ListView, AsyncStorage } from 'react-native'
-import { Home, Bus } from '~/components'
+import { Home, BusItem } from '~/components'
 import busSchedules from '~/lib'
 import immutable, { fromJS } from 'immutable'
 import { getSavedBuses, filterBusesByText, filterBusesByArray } from '~/storage/api'
@@ -60,7 +60,7 @@ export default class HomeContainer extends PureComponent {
 
   renderRow = (bus, listId) => {
 
-    return <Bus listId={listId}
+    return <BusItem listId={listId}
                 name={bus.get('nome')}
                 code={bus.get('numero')}
                 selectBus={this.handleSelectBus}

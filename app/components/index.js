@@ -1,5 +1,5 @@
 export { default as Home } from './Home/Home'
-export { default as Bus } from './Bus/Bus'
+export { default as BusItem } from './BusItem/BusItem'
 export { default as BusDetails } from './BusDetails/BusDetails'
 export { default as POABusNavigationBar } from './POABusNavigationBar/POABusNavigationBar'
 export { default as FlashNotification } from './FlashNotification/FlashNotification'

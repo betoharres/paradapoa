@@ -5,13 +5,13 @@ import { ListItem } from 'react-native-elements'
 
 import { colors } from '~/styles'
 
-Bus.propTypes = {
+BusItem.propTypes = {
   name: PropTypes.string.isRequired,
   code: PropTypes.string.isRequired,
   selectBus: PropTypes.func.isRequired,
 }
 
-export default function Bus (props) {
+export default function BusItem (props) {
 
   return (
     <ListItem

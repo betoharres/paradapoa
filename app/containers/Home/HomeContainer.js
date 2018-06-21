@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { ListView, AsyncStorage } from 'react-native'
+import { ListView } from 'react-native'
 import { Home, BusItem } from '~/components'
 import busSchedules from '~/lib'
 import immutable, { fromJS } from 'immutable'

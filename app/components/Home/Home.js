@@ -19,6 +19,7 @@ export default function Home (props) {
       <SearchBar
         lightTheme
         round
+        clearIcon={props.searchText.length > 0 ? true : false}
         autoCorrect={false}
         onChangeText={props.onSearchBus}
         inputStyle={{backgroundColor: 'white'}}

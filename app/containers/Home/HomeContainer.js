@@ -26,50 +26,53 @@ export default class HomeContainer extends PureComponent {
       searchedText: '',
       bookmarks: fromJS({}),
       dataSource: this.ds.cloneWithRows([]),
+      isFocused: true,
     }
 
     // react-navigation does not unmount after changing screen,
     // so this is the code that would be inside componentDidMount
-    this.subs = this.props.navigation.addListener('willFocus', async () => {
+    this.willFocusListener = this.props.navigation.addListener('willFocus', async () => {
       const bookmarksKeys = Object.keys(await getSavedBuses())
+      const bookmarks = filterBusesByArray(bookmarksKeys)
 
-      if (bookmarksKeys.length > 0) {
-        const bookmarks = filterBusesByArray(bookmarksKeys, busSchedules)
-        this.setState({ bookmarks })
-      } else {
-        this.setState({ bookmarks: fromJS({}) })
-      }
-      this.handleDisplayBuses(this.state.searchedText)
+      this.handleDisplayBuses(this.state.searchedText, bookmarks)
+    })
+
+    this.didBlurListener = this.props.navigation.addListener('didBlur', () => {
+      this.setState({isFocused: false})
     })
   }
 
   componentWillUnmount () {
-    this.subs.remove()
+    this.willFocusListener.remove()
   }
 
-  handleSelectBus = async (code) => {
+  handleDisplayBuses = (searchedText = '', bookmarks = this.state.bookmarks) => {
+    if (searchedText.length > 0)
+      var busList = filterBusesByText(searchedText)
+    else
+      var busList = bookmarks.size > 0 ? bookmarks : busSchedules
+
+    this.setState({
+      isFocused: true,
+      searchedText,
+      bookmarks,
+      dataSource: this.ds.cloneWithRows(busList.toArray()),
+    })
+  }
+
+  handleSelectBus = (code) => {
     this.props.navigation.navigate('BusDetails', {code})
   }
 
-  handleDisplayBuses = (searchedText) => {
-    if (searchedText.length > 0) {
-      const searchedBuses = filterBusesByText(searchedText, busSchedules).toArray()
-      this.setState({ searchedText, dataSource: this.ds.cloneWithRows(searchedBuses) })
-    } else {
-      const { bookmarks } = this.state
-      const busList = bookmarks.size > 0 ? bookmarks : busSchedules
-      this.setState({ searchedText, dataSource: this.ds.cloneWithRows(busList.toArray()) })
-    }
-  }
-
-  renderRow = (bus, listId) => {
+  renderRow = (bus, index) => {
 
     return <BusItem
-                listId={listId}
-                name={bus.get('nome')}
-                code={bus.get('numero')}
-                selectBus={this.handleSelectBus}
-                isFavorite={this.state.bookmarks.has(bus.get('numero'))} />
+              listId={index}
+              name={bus.get('nome')}
+              code={bus.get('numero')}
+              selectBus={this.handleSelectBus}
+              isFavorite={this.state.bookmarks.has(bus.get('numero'))} />
   }
 
   render () {

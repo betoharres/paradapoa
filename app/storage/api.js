@@ -1,5 +1,6 @@
 import { AsyncStorage } from 'react-native'
 import { fromJS } from 'immutable'
+import busSchedules from '~/lib'
 
 export async function toggleSaveBus (code) {
   const savedBuses = await AsyncStorage.getItem('savedBuses')
@@ -22,10 +23,12 @@ export async function getSavedBuses () {
   return filteredBuses
 }
 
-export function filterBusesByText (text, buses) {
+export function filterBusesByText (text) {
+  if (text.length === 0) return fromJS({})
+
   const searchedText = text.trim().toUpperCase()
   let filteredBuses = fromJS({})
-  buses.map((bus) => {
+  busSchedules.map((bus) => {
     const busName = bus.get('nome')
     const busCode = bus.get('numero')
     if (busName.indexOf(searchedText) !== -1
@@ -36,10 +39,12 @@ export function filterBusesByText (text, buses) {
   return filteredBuses
 }
 
-export function filterBusesByArray (array, buses) {
+export function filterBusesByArray (array) {
+  if (array.length === 0) return fromJS({})
+
   let filteredBuses = fromJS({})
   array.forEach(item => {
-    filteredBuses = filteredBuses.merge({[item]: buses.get(item)})
+    filteredBuses = filteredBuses.merge({[item]: busSchedules.get(item)})
   })
   return filteredBuses
 }

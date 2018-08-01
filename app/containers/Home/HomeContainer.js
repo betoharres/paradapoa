@@ -62,7 +62,7 @@ export default class HomeContainer extends PureComponent {
   }
 
   handleSelectBus = (code) => {
-    this.props.navigation.navigate('BusDetails', {code})
+    setTimeout(() => this.props.navigation.navigate('BusDetails', {code}), 150)
   }
 
   renderRow = (bus, index) => {

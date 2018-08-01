@@ -39,6 +39,7 @@ export default class HomeContainer extends PureComponent {
     })
 
     this.didBlurListener = this.props.navigation.addListener('didBlur', () => {
+      clearTimeout(this.timeout)
       this.setState({isFocused: false})
     })
   }
@@ -62,7 +63,7 @@ export default class HomeContainer extends PureComponent {
   }
 
   handleSelectBus = (code) => {
-    setTimeout(() => this.props.navigation.navigate('BusDetails', {code}), 120)
+    this.timeout = setTimeout(() => this.props.navigation.navigate('BusDetails', {code}), 120)
   }
 
   renderRow = (bus, index) => {

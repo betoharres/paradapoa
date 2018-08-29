@@ -19,7 +19,7 @@ import {
 import {
   POABusNavigationBar,
   FlashNotification,
-  BusInfo,
+  ScheduleDirection,
 } from '~/components'
 
 const { width } = Dimensions.get('window')
@@ -66,7 +66,7 @@ export default function BusDetails (props) {
         <Text style={styles.title}>{props.name}</Text>
       </View>
       <ScrollView style={styles.scrollView}>
-        <BusInfo busInfo={props.schedules} />
+        <ScheduleDirection schedules={props.schedules} />
       </ScrollView>
     </View>
   )

@@ -2,13 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Text, View, Dimensions, StyleSheet, Platform, VirtualizedList } from 'react-native'
 import { colors, fontSizes } from '~/styles'
-import { List } from 'immutable'
+import { Map } from 'immutable'
 
 const { width } = Dimensions.get('window')
 const SCHEDULE_ITEM_WIDTH = (width * 0.26)
 
 Schedules.propTypes = {
-  schedules: PropTypes.instanceOf(List),
+  schedules: PropTypes.instanceOf(Map),
 }
 
 export default function Schedules (props) {
@@ -16,8 +16,6 @@ export default function Schedules (props) {
   setBackgroundColor = (schedule) => {
     return schedule.get('cadeirante') ? {backgroundColor: 'rgba(3, 169, 244, 0.08)'} : {}
   }
-
-
   return (
     <View style={styles.schedulesContainer}>
       <VirtualizedList
@@ -26,7 +24,7 @@ export default function Schedules (props) {
         getItem={(data, index) => {
           let items = []
           for (let i = 0; i < 3; i++) {
-            const item = data.get(index * 3 + i)
+            const item = data.toList().get(index * 3 + i)
             item && items.push(item)
           }
           return items
@@ -36,11 +34,11 @@ export default function Schedules (props) {
         renderItem={({item, index}) => {
           return (
             <View key={index} style={styles.scheduleItemContainer}>
-              {item.map((elem, i) => (
-                <View key={i} style={[styles.scheduleItem, this.setBackgroundColor(elem)]}>
-                  <Text key={i}>{elem.get('horario')}</Text>
+              {item.map((elem, i) => {
+                return <View key={i} style={[styles.scheduleItem, this.setBackgroundColor(elem)]}>
+                  <Text key={i}>{elem.getIn(['horario'])}</Text>
                 </View>
-              ))}
+              })}
             </View>
           )
         }}

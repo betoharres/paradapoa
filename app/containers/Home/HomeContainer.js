@@ -66,12 +66,10 @@ export default class HomeContainer extends PureComponent {
     this.timeout = setTimeout(() => this.props.navigation.navigate('BusDetails', {code}), 120)
   }
 
-  renderRow = (bus, index) => {
-
+  renderRow = ([code, bus], x, index) => {
     return <BusItem
               listId={index}
-              name={bus.get('nome')}
-              code={bus.get('numero')}
+              bus={bus}
               selectBus={this.handleSelectBus}
               isFavorite={this.state.bookmarks.has(bus.get('numero'))} />
   }

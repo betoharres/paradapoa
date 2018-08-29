@@ -10,7 +10,17 @@ export function getDayWeek () {
     return 'domingo'
 }
 
-export function getCurrentTime () {
-  const date = new Date()
-  return `${date.getHours()}:${date.getMinutes()}`
+export function getNextSchedule (busSchedules, direction) {
+  const scheduleDirection = busSchedules.get(direction)
+  if (scheduleDirection) {
+    const schedulesToday = scheduleDirection.get(getDayWeek())
+    if (schedulesToday) {
+      const [...scheduleKeys] = schedulesToday.keys()
+      const now = new Date()
+      const currentTime = parseInt(`${now.getHours()}${now.getMinutes()}`)
+      const nextSchedule = scheduleKeys.find((schedule) => parseInt(schedule) > currentTime)
+      return nextSchedule ? schedulesToday.get(nextSchedule) : schedulesToday.first()
+    }
+  }
+  return null
 }

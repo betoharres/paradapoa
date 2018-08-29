@@ -1,32 +1,27 @@
 import React from 'react'
-import { Text, View, StyleSheet, Platform, Dimensions } from 'react-native'
+import { View, StyleSheet } from 'react-native'
+
 import { Schedules } from '~/components'
 import { Card, Badge } from 'react-native-elements'
-
-import { colors, fontSizes } from '~/styles'
 import { parseTitle, parseDirection } from '~/utils/parse'
 
-const { width } = Dimensions.get('window')
-const SCHEDULE_ITEM_WIDTH = (width * 0.26)
-
 export default function ScheduleDirection (props) {
-  const directionTitle = parseDirection(props.directionsInfo.get('sentido'))
-  let weekDaysType = props.directionsInfo.keySeq().toArray()
-  weekDaysType = weekDaysType.filter((item) => item !== 'sentido')
-  const isLastDirection = (props.directionsInfo.size === props.counter)
-
   return (
-    <Card title={directionTitle}>
-      {weekDaysType.map((weekDayType, index) => (
-        <View key={index}>
-          <View style={styles.dayTypeContainer}>
-            <Badge key={index} value={parseTitle(weekDayType)} />
-          </View>
-          <Schedules key={index} schedules={props.directionsInfo.get(weekDayType)}/>
-        </View>
+    <View>
+      {props.schedules.entrySeq().map(([direction, dayTypes], index) => (
+        <Card key={index} title={parseDirection(direction)}>
+          {dayTypes.entrySeq().map(([dayType, schedules], index) => (
+            <View key={index}>
+              <View key={index} style={styles.dayTypeContainer}>
+                <Badge key={index} value={parseTitle(dayType)} />
+              </View>
+              <Schedules schedules={schedules} />
+            </View>
+          ))}
+        </Card>
       ))}
-    </Card>
-  )
+    </View>
+    )
 }
 
 const styles = StyleSheet.create({

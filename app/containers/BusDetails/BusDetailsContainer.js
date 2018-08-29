@@ -48,7 +48,7 @@ export default class BusDetailsContainer extends Component {
     } catch (e) {
       this.setState({
         showFlashNotification: true,
-        flashNotificationText: `Erro ao salvar o onibus ${this.props.code}`,
+        flashNotificationText: `Erro ao salvar o onibus ${this.state.code}`,
       })
     }
   }

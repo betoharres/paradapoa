@@ -4,6 +4,7 @@ import { View, StyleSheet, ListView, Platform, TextInput } from 'react-native'
 import { SearchBar, List } from 'react-native-elements'
 import { colors } from '~/styles'
 import { Footer } from '~/components'
+import { FlashNotification } from '~/components'
 
 Home.propTypes = {
   dataSource: PropTypes.object.isRequired,
@@ -16,6 +17,12 @@ export default function Home (props) {
 
   return (
     <View style={Platform.OS === 'android' ? styles.containerAndroid : styles.containerIOS}>
+      {props.showNotification
+          ? <FlashNotification
+              top={Platform.OS === 'android' ? 60 : 48}
+              text={props.notificationText}
+              onHideNotification={props.onHideNotification} />
+          : null}
       <SearchBar
         lightTheme
         round

@@ -5,6 +5,7 @@ import { Home, BusItem } from '~/components'
 import busSchedules from '~/lib'
 import immutable, { fromJS } from 'immutable'
 import { getSavedBuses, filterBusesByText, filterBusesByArray } from '~/storage/api'
+import { parseDirection } from '~/utils/parse'
 
 export default class HomeContainer extends PureComponent {
 
@@ -27,6 +28,9 @@ export default class HomeContainer extends PureComponent {
       bookmarks: fromJS({}),
       dataSource: this.ds.cloneWithRows([]),
       isFocused: true,
+      scheduleDirection: 0,
+      flashNotificationText: '',
+      showFlashNotification: false,
     }
 
     // react-navigation does not unmount after changing screen,
@@ -66,11 +70,29 @@ export default class HomeContainer extends PureComponent {
     this.timeout = setTimeout(() => this.props.navigation.navigate('BusDetails', {code}), 120)
   }
 
+  handleHideFlashNotification = () => {
+    this.setState({
+      showFlashNotification: false
+    })
+  }
+
+  handleToogleDirection = (bus) => {
+    let scheduleDirection = this.state.scheduleDirection ? 0 : 1
+    scheduleDirection = bus.getIn(['sentidos', scheduleDirection]) ? scheduleDirection : 0
+    this.setState({
+      showFlashNotification: true,
+      scheduleDirection,
+      flashNotificationText: parseDirection(bus.getIn(['sentidos', scheduleDirection])),
+    })
+  }
+
   renderRow = ([code, bus], x, index) => {
     return <BusItem
               listId={index}
               bus={bus}
               selectBus={this.handleSelectBus}
+              toogleDirection={this.handleToogleDirection}
+              scheduleDirection={this.state.scheduleDirection}
               isFavorite={this.state.bookmarks.has(bus.get('numero'))} />
   }
 
@@ -80,6 +102,9 @@ export default class HomeContainer extends PureComponent {
         renderRow={this.renderRow}
         dataSource={this.state.dataSource}
         searchText={this.state.searchedText}
+        onHideNotification={this.handleHideFlashNotification}
+        showNotification={this.state.showFlashNotification}
+        notificationText={this.state.flashNotificationText}
         onSearchBus={(text) => this.handleDisplayBuses(text)} />
     )
   }

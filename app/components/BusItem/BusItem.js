@@ -16,10 +16,12 @@ BusItem.propTypes = {
 
 export default function BusItem (props) {
   let nextSchedule = null
-  let badgeColor = {text: 'white', bg: 'black'}
+  const badgeColor = props.scheduleDirection
+    ? {text: 'black', bg: 'orange'}
+    : {text: 'white', bg: 'black'}
 
   if (props.isFavorite)
-    nextSchedule = getNextSchedule(props.bus.get('horarios'), props.bus.getIn(['sentidos', 0]))
+    nextSchedule = getNextSchedule(props.bus.get('horarios'), props.bus.getIn(['sentidos', direction]))
     if (nextSchedule)
       nextSchedule = nextSchedule.get('horario')
 
@@ -31,11 +33,11 @@ export default function BusItem (props) {
       underlayColor={colors.border}
       leftIcon={props.isFavorite ? {name: 'favorite', color: colors.red} : null}
       badge={props.isFavorite && nextSchedule ? {element:
-        <Badge containerStyle={
-          {backgroundColor: badgeColor['bg']}}
-          onPress={() => console.log('Badge pressed')}>
+        <Badge
+          containerStyle={{backgroundColor: badgeColor['bg']}}
+          onPress={() => props.toogleDirection(props.bus)}>
             <View style={{display: 'flex', flexDirection: 'row'}}>
-              <Text style={{color: 'white'}}>{nextSchedule}</Text>
+              <Text style={{color: badgeColor['text']}}>{nextSchedule}</Text>
             </View>
           </Badge>}
       : null}

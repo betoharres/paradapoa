@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { View, Text, StyleSheet, Animated, Dimensions } from 'react-native'
+import { View, Text, StyleSheet, Animated, Dimensions, Platform } from 'react-native'
 const { width } = Dimensions.get('window')
-const NOTIFICATION_WIDTH = width * 0.7
+const NOTIFICATION_WIDTH = width * 0.46
 
 export default class FlashNotification extends Component {
 
@@ -15,6 +15,7 @@ export default class FlashNotification extends Component {
   static defaultProps = {
     length: 2000,
     text: '',
+    top: 43,
   }
 
   state = {
@@ -42,6 +43,7 @@ export default class FlashNotification extends Component {
     return {
       width: this.state.width,
       opacity: this.state.opacity,
+      top: this.props.top,
     }
   }
 
@@ -65,7 +67,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 10,
-    top: 43,
     left: (width - NOTIFICATION_WIDTH) / 2,
   },
   text: {

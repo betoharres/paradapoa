@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { ListView } from 'react-native'
 import { Home, BusItem } from '~/components'
 import busSchedules from '~/lib'
-import immutable, { fromJS } from 'immutable'
+import immutable, { fromJS, Map } from 'immutable'
 import { getSavedBuses, filterBusesByText, filterBusesByArray } from '~/storage/api'
 import { parseDirection } from '~/utils/parse'
 
@@ -28,7 +28,7 @@ export default class HomeContainer extends PureComponent {
       bookmarks: fromJS({}),
       dataSource: this.ds.cloneWithRows([]),
       isFocused: true,
-      scheduleDirection: 0,
+      badgeDirection: Map({}),
       flashNotificationText: '',
       showFlashNotification: false,
     }
@@ -77,13 +77,19 @@ export default class HomeContainer extends PureComponent {
   }
 
   handleToogleDirection = (bus) => {
-    let scheduleDirection = this.state.scheduleDirection ? 0 : 1
-    scheduleDirection = bus.getIn(['sentidos', scheduleDirection]) ? scheduleDirection : 0
-    this.setState({
-      showFlashNotification: true,
-      scheduleDirection,
-      flashNotificationText: parseDirection(bus.getIn(['sentidos', scheduleDirection])),
-    })
+    if (bus.get('sentidos').size > 1) {
+      const direction = this.state.badgeDirection.get(bus.get('numero')) ? 0 : 1
+      this.setState({
+        showFlashNotification: true,
+        badgeDirection: this.state.badgeDirection.merge({[bus.get('numero')]: direction}),
+        flashNotificationText: parseDirection(bus.getIn(['sentidos', direction])),
+      })
+    } else {
+      this.setState({
+        showFlashNotification: true,
+        flashNotificationText: parseDirection(bus.getIn(['sentidos', 0])),
+      })
+    }
   }
 
   renderRow = ([code, bus], x, index) => {
@@ -92,7 +98,7 @@ export default class HomeContainer extends PureComponent {
               bus={bus}
               selectBus={this.handleSelectBus}
               toogleDirection={this.handleToogleDirection}
-              scheduleDirection={this.state.scheduleDirection}
+              indexDirection={this.state.badgeDirection.get(code) || 0}
               isFavorite={this.state.bookmarks.has(bus.get('numero'))} />
   }
 

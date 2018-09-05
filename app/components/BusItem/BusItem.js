@@ -16,12 +16,12 @@ BusItem.propTypes = {
 
 export default function BusItem (props) {
   let nextSchedule = null
-  const badgeColor = props.scheduleDirection
+  const badgeColor = props.indexDirection
     ? {text: 'black', bg: 'orange'}
     : {text: 'white', bg: 'black'}
 
   if (props.isFavorite)
-    nextSchedule = getNextSchedule(props.bus.get('horarios'), props.bus.getIn(['sentidos', direction]))
+    nextSchedule = getNextSchedule(props.bus.get('horarios'), props.bus.getIn(['sentidos', props.indexDirection]))
     if (nextSchedule)
       nextSchedule = nextSchedule.get('horario')
 

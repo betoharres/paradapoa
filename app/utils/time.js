@@ -18,7 +18,7 @@ export function getNextSchedule (busSchedules, direction) {
       const [...scheduleKeys] = schedulesToday.keys()
       const now = new Date()
       const currentTime = parseInt(`${now.getHours()}${now.getMinutes()}`)
-      const nextSchedule = scheduleKeys.find((schedule) => parseInt(schedule) > currentTime)
+      const nextSchedule = scheduleKeys.find((schedule) => parseInt(schedule) >= currentTime)
       return nextSchedule ? schedulesToday.get(nextSchedule) : schedulesToday.first()
     }
   }

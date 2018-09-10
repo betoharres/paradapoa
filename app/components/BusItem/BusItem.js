@@ -12,6 +12,8 @@ BusItem.propTypes = {
   bus: PropTypes.instanceOf(Map),
   isFavorite: PropTypes.bool.isRequired,
   selectBus: PropTypes.func.isRequired,
+  indexDirection: PropTypes.number.isRequired,
+  toogleDirection: PropTypes.func.isRequired,
 }
 
 export default function BusItem (props) {

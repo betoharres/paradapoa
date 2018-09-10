@@ -31,6 +31,7 @@ export default class HomeContainer extends PureComponent {
       badgeDirection: Map({}),
       flashNotificationText: '',
       showFlashNotification: false,
+      refreshing: false,
     }
 
     // react-navigation does not unmount after changing screen,
@@ -92,6 +93,12 @@ export default class HomeContainer extends PureComponent {
     }
   }
 
+  _onRefresh = () => {
+    this.setState({refreshing: true})
+    this.forceUpdate()
+    this.setState({refreshing: false})
+  }
+
   renderRow = ([code, bus], x, index) => {
     return <BusItem
               listId={index}
@@ -107,11 +114,13 @@ export default class HomeContainer extends PureComponent {
       <Home
         renderRow={this.renderRow}
         dataSource={this.state.dataSource}
+        refreshing={this.state.refreshing}
         searchText={this.state.searchedText}
         onHideNotification={this.handleHideFlashNotification}
         showNotification={this.state.showFlashNotification}
         notificationText={this.state.flashNotificationText}
-        onSearchBus={(text) => this.handleDisplayBuses(text)} />
+        onSearchBus={(text) => this.handleDisplayBuses(text)}
+        onRefresh={() =>  this._onRefresh()} />
     )
   }
 }

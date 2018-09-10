@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { View, StyleSheet, ListView, Platform, TextInput } from 'react-native'
+import { View, StyleSheet, ListView, Platform, TextInput, RefreshControl } from 'react-native'
 import { SearchBar, List } from 'react-native-elements'
 import { colors } from '~/styles'
 import { Footer } from '~/components'
@@ -11,6 +11,8 @@ Home.propTypes = {
   renderRow: PropTypes.func.isRequired,
   onSearchBus: PropTypes.func.isRequired,
   searchText: PropTypes.string.isRequired,
+  refreshing: PropTypes.bool.isRequired,
+  onRefresh: PropTypes.func.isRequired,
 }
 
 export default function Home (props) {
@@ -36,6 +38,11 @@ export default function Home (props) {
       <ListView
         renderRow={props.renderRow}
         dataSource={props.dataSource}
+        refreshControl={
+          <RefreshControl
+            refreshing={props.refreshing}
+            onRefresh={props.onRefresh} />
+        }
         enableEmptySections={true} />
         { Platform.OS === 'android' ? <Footer /> : null }
     </View>

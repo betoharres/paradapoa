@@ -13,6 +13,7 @@ Home.propTypes = {
   searchText: PropTypes.string.isRequired,
   refreshing: PropTypes.bool.isRequired,
   onRefresh: PropTypes.func.isRequired,
+  hasBookmarks: PropTypes.bool.isRequired,
 }
 
 export default function Home (props) {
@@ -39,9 +40,11 @@ export default function Home (props) {
         renderRow={props.renderRow}
         dataSource={props.dataSource}
         refreshControl={
-          <RefreshControl
-            refreshing={props.refreshing}
-            onRefresh={props.onRefresh} />
+          props.hasBookmarks
+          ? <RefreshControl
+              refreshing={props.refreshing}
+              onRefresh={props.onRefresh} />
+          : null
         }
         enableEmptySections={true} />
         { Platform.OS === 'android' ? <Footer /> : null }

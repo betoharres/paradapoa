@@ -113,6 +113,7 @@ export default class HomeContainer extends PureComponent {
     return (
       <Home
         renderRow={this.renderRow}
+        hasBookmarks={this.state.bookmarks.size > 0}
         dataSource={this.state.dataSource}
         refreshing={this.state.refreshing}
         searchText={this.state.searchedText}

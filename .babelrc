@@ -1,4 +1,4 @@
 {
-  "presets": ["react-native"],
-  "plugins": [["babel-root-import", {"rootPathSuffix": "app"}]]
+  "presets": ["module:metro-react-native-babel-preset"],
+  "plugins": [["module:babel-root-import", {"rootPathSuffix": "app"}]]
 }

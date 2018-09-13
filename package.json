@@ -1,5 +1,5 @@
 {
-  "name": "BusPOAOffline",
+  "name": "paradapoa",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -8,21 +8,21 @@
   },
   "dependencies": {
     "immutable": "4.0.0-rc.9",
-    "react": "16.3.1",
-    "react-native": "0.55.4",
+    "react": "16.5.0",
+    "react-native": "0.57.0",
     "react-native-elements": "^0.19.1",
     "react-native-navbar": "^2.1.0",
     "react-native-vector-icons": "^4.6.0",
-    "react-navigation": "^2.3.1",
-    "react-tap-event-plugin": "^3.0.2"
+    "react-navigation": "^2.3.1"
   },
   "devDependencies": {
-    "babel-jest": "22.4.3",
-    "babel-preset-react-native": "4.0.0",
+    "babel-jest": "23.6.0",
+    "babel-preset-react-native": "^4.0.1",
     "babel-root-import": "^4.1.8",
-    "jest": "22.4.3",
-    "prop-types": "^15.6.1",
-    "react-test-renderer": "16.3.1"
+    "jest": "23.6.0",
+    "metro-react-native-babel-preset": "0.45.2",
+    "prop-types": "^15.6.2",
+    "react-test-renderer": "16.5.0"
   },
   "jest": {
     "preset": "react-native"

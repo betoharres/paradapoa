@@ -1,3 +1,6 @@
+// 1 -> 01
+export function pad(num, len) { return (`00000000${num}`).substr(-len) }
+
 export function getDayWeek () {
   const date = new Date()
   const day = date.getDay()
@@ -17,7 +20,9 @@ export function getNextSchedule (busSchedules, direction) {
     if (schedulesToday) {
       const [...scheduleKeys] = schedulesToday.keys()
       const now = new Date()
-      const currentTime = parseInt(`${now.getHours()}${now.getMinutes()}`)
+      const hour = now.getHours()
+      const minutes = pad(now.getMinutes(), 2)
+      const currentTime = parseInt(`${hour}${minutes}`)
       const nextSchedule = scheduleKeys.find((schedule) => parseInt(schedule) >= currentTime)
       return nextSchedule ? schedulesToday.get(nextSchedule) : schedulesToday.first()
     }

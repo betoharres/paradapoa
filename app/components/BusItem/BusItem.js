@@ -8,7 +8,7 @@ import { colors } from '~/styles'
 import { Map } from 'immutable'
 
 BusItem.propTypes = {
-  listId: PropTypes.string.isRequired,
+  listId: PropTypes.number.isRequired,
   bus: PropTypes.instanceOf(Map),
   isFavorite: PropTypes.bool.isRequired,
   selectBus: PropTypes.func.isRequired,

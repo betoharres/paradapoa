@@ -1,13 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { View, StyleSheet, ListView, Platform, TextInput, RefreshControl } from 'react-native'
+import { View, StyleSheet, VirtualizedList, Platform, TextInput, RefreshControl } from 'react-native'
 import { SearchBar, List } from 'react-native-elements'
 import { colors } from '~/styles'
 import { Footer } from '~/components'
 import { FlashNotification } from '~/components'
 
 Home.propTypes = {
-  dataSource: PropTypes.object.isRequired,
+  busList: PropTypes.object.isRequired,
   renderRow: PropTypes.func.isRequired,
   onSearchBus: PropTypes.func.isRequired,
   searchText: PropTypes.string.isRequired,
@@ -36,17 +36,13 @@ export default function Home (props) {
         placeholder={'Pesquisar'}
         textInputRef={'SeachBus'}
         value={props.searchText} />
-      <ListView
-        renderRow={props.renderRow}
-        dataSource={props.dataSource}
-        refreshControl={
-          props.hasBookmarks
-          ? <RefreshControl
-              refreshing={props.refreshing}
-              onRefresh={props.onRefresh} />
-          : null
-        }
-        enableEmptySections={true} />
+      <VirtualizedList
+        data={props.busList}
+        renderItem={props.renderRow}
+        getItemCount={(data) => data.size}
+        getItem={(row, index) => row.get(index)}
+        keyExtractor={(row) => row.get('id')}
+      />
         { Platform.OS === 'android' ? <Footer /> : null }
     </View>
   )

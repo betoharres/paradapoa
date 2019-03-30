@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { ListView } from 'react-native'
 import { Home, BusItem } from '~/components'
 import busSchedules from '~/lib'
-import immutable, { fromJS, Map } from 'immutable'
+import immutable, { fromJS, Map, Seq } from 'immutable'
 import { getSavedBuses, filterBusesByText, filterBusesByArray } from '~/storage/api'
 import { parseDirection } from '~/utils/parse'
 
@@ -22,11 +22,10 @@ export default class HomeContainer extends PureComponent {
 
   constructor (props) {
     super(props)
-    this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => !immutable.is(r1, r2)})
     this.state = {
       searchedText: '',
       bookmarks: fromJS({}),
-      dataSource: this.ds.cloneWithRows([]),
+      busList: Seq([]),
       isFocused: true,
       badgeDirection: Map({}),
       flashNotificationText: '',
@@ -54,16 +53,19 @@ export default class HomeContainer extends PureComponent {
   }
 
   handleDisplayBuses = (searchedText = '', bookmarks = this.state.bookmarks) => {
+    let busList
     if (searchedText.length > 0)
-      var busList = filterBusesByText(searchedText)
+      busList = filterBusesByText(searchedText)
     else
-      var busList = bookmarks.size > 0 ? bookmarks : busSchedules
+      busList = bookmarks.size > 0 ? bookmarks : busSchedules
+
+    busList = busList.toIndexedSeq()
 
     this.setState({
       isFocused: true,
       searchedText,
       bookmarks,
-      dataSource: this.ds.cloneWithRows(busList.toArray()),
+      busList,
     })
   }
 
@@ -99,13 +101,13 @@ export default class HomeContainer extends PureComponent {
     this.setState({refreshing: false})
   }
 
-  renderRow = ([code, bus], x, index) => {
+  renderRow = ({item: bus, index}) => {
     return <BusItem
               listId={index}
               bus={bus}
               selectBus={this.handleSelectBus}
               toogleDirection={this.handleToogleDirection}
-              indexDirection={this.state.badgeDirection.get(code) || 0}
+              indexDirection={this.state.badgeDirection.get(bus.get('code')) || 0}
               isFavorite={this.state.bookmarks.has(bus.get('numero'))} />
   }
 
@@ -114,7 +116,7 @@ export default class HomeContainer extends PureComponent {
       <Home
         renderRow={this.renderRow}
         hasBookmarks={this.state.bookmarks.size > 0}
-        dataSource={this.state.dataSource}
+        busList={this.state.busList}
         refreshing={this.state.refreshing}
         searchText={this.state.searchedText}
         onHideNotification={this.handleHideFlashNotification}
